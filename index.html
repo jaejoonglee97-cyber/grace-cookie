@@ -4,16 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
-  <!-- 카카오톡 · SNS 링크 공유 미리보기 (Open Graph) -->
+  <!-- ========================================================
+       카카오톡 · 문자 · SNS 링크 공유 미리보기 (Open Graph)
+       ======================================================== -->
   <title>🥠 오늘의 묵상쿠키 | Daily Grace Cookie</title>
   <meta name="description" content="매일 아침 갓 구운 따뜻한 말씀 쿠키를 톡 깨뜨려 오늘의 은혜를 확인하고 소중한 분께 선물하세요.">
+  
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="오늘의 묵상쿠키">
   <meta property="og:title" content="🥠 오늘의 묵상쿠키 | 바삭 깨뜨려 여는 오늘의 말씀">
   <meta property="og:description" content="도착한 묵상쿠키를 터치해 깨뜨려보세요! 오늘의 성경 말씀과 원어 해설, 새벽 페어링 찬양이 펼쳐집니다.">
-  <meta property="og:image" content="https://placehold.co/1200x630/5B42F3/FFFDF9.png?text=Daily+Grace+Cookie%0A%EC%98%A4%EB%8A%98%EC%9D%98+%EB%AC%B5%EC%83%81%EC%BF%A0%ED%82%A4&font=montserrat">
+  <!-- 한글 폰트 깨짐 현상이 없는 안전한 1200x630 고정 미리보기 배너 -->
+  <meta property="og:image" content="https://placehold.co/1200x630/5B42F3/FFFDF9.png?text=DAILY+GRACE+COOKIE%0ATap+to+Open+Today's+Word&font=montserrat">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="🥠 오늘의 묵상쿠키 | Daily Grace Cookie">
+  <meta name="twitter:description" content="매일 아침 갓 구운 따뜻한 말씀 쿠키를 깨뜨려 오늘의 은혜를 확인하세요.">
+  <meta name="twitter:image" content="https://placehold.co/1200x630/5B42F3/FFFDF9.png?text=DAILY+GRACE+COOKIE%0ATap+to+Open+Today's+Word&font=montserrat">
+
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥠</text></svg>">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -62,7 +72,6 @@
     }
     .anim-float { animation: float3D 4s ease-in-out infinite; }
 
-    /* 포춘쿠키 모션 */
     @keyframes cookieIdle {
       0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
       50% { transform: translateY(-7px) scale(1.04) rotate(2deg); }
@@ -119,7 +128,7 @@
 </head>
 <body class="flex justify-center min-h-screen">
 
-  <!-- 모바일 프레임 -->
+  <!-- 모바일 프레임 (최대 430px) -->
   <div class="w-full max-w-[430px] bg-[#FAFBFD] min-h-screen flex flex-col justify-between relative shadow-2xl overflow-x-hidden pb-40">
     
     <!-- 상단 공통 헤더 -->
@@ -525,7 +534,7 @@
     </div>
 
     <!-- ==========================================================
-         🎁 [모달] 지인에게 묵상쿠키 선물하기 (안전한 URL 처리 탑재)
+         🎁 [모달] 지인에게 묵상쿠키 선물하기
          ========================================================== -->
     <div id="giftModal" style="display: none;" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 items-center justify-center p-5">
       <div class="w-full max-w-[385px] max-h-[90vh] overflow-y-auto bg-white rounded-[32px] p-6 space-y-4 shadow-2xl">
@@ -553,12 +562,6 @@
           <div>
             <label class="text-xs font-bold text-slate-700 block mb-1">함께 담을 한 줄 축복 메시지</label>
             <input id="giftMsgInput" type="text" placeholder="예: 오늘도 평안하고 힘찬 하루 보내세요! 💙" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#5B42F3]">
-          </div>
-          <!-- 구글 앱스 스크립트에서 임시 주소가 감지될 때만 나타나는 배포 주소 입력란 -->
-          <div id="gasUrlWarningBox" style="display: none;" class="bg-indigo-50/80 border border-indigo-200 rounded-xl p-3 space-y-1.5">
-            <label class="text-[11px] font-extrabold text-[#5B42F3] block">📌 사이트 기본 주소 (최초 1회 자동 저장)</label>
-            <p class="text-[10px] text-slate-600 leading-normal">구글 앱스 스크립트 환경에서는 빈 화면 방지를 위해 배포된 웹앱 주소(`.../exec`)를 아래에 한 번만 붙여넣어 주세요.</p>
-            <input id="customPublicUrlInput" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-white border border-indigo-200 rounded-lg px-2.5 py-2 text-[11px] focus:outline-none focus:border-[#5B42F3]">
           </div>
         </div>
 
@@ -644,17 +647,6 @@
   </div>
 
   <script>
-    // Google Apps Script 템플릿 변수 수신 (일반 호스팅에서도 에러가 나지 않도록 문자열 안전 처리)
-    const SERVER_APP_URL = "<?= typeof appUrl !== 'undefined' ? appUrl : '' ?>";
-    const SERVER_GIFT_ID = "<?= typeof gift !== 'undefined' ? gift : '' ?>";
-    const SERVER_FROM    = "<?= typeof from !== 'undefined' ? from : '' ?>";
-    const SERVER_MSG     = "<?= typeof msg !== 'undefined' ? msg : '' ?>";
-    const SERVER_ITEM_ID = "<?= typeof id !== 'undefined' ? id : '' ?>";
-
-    function isCleanTemplateVal(val) {
-      return val && val.indexOf('<?') === -1 && val.trim() !== '';
-    }
-
     function safeGetStorage(key, fallback) {
       try {
         const val = localStorage.getItem(key);
@@ -665,29 +657,8 @@
       try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
     }
 
-    // googleusercontent.com 임시 내부 주소가 공유되는 것을 완벽 방지하는 URL 획득 함수
-    function getPublicShareBaseUrl() {
-      // 1순위: Apps Script 서버에서 넘겨준 진짜 배포 주소
-      if (isCleanTemplateVal(SERVER_APP_URL)) {
-        return SERVER_APP_URL;
-      }
-      // 2순위: 사용자가 저장해둔 배포 주소
-      const savedUrl = safeGetStorage('daily_cookie_public_url', '');
-      if (savedUrl && savedUrl.startsWith('http')) {
-        return savedUrl.split('?')[0];
-      }
-      // 3순위: 일반 웹호스팅(Vercel, Netlify, GitHub Pages 등)인 경우 현재 주소 사용
-      const currentHref = window.location.href.split('?')[0];
-      if (currentHref.indexOf('googleusercontent.com') === -1) {
-        return currentHref;
-      }
-      // 만약 googleusercontent.com 내부 프레임인데 배포 주소가 아직 없다면 입력창 값 확인
-      const inputVal = document.getElementById('customPublicUrlInput')?.value.trim();
-      if (inputVal && inputVal.startsWith('http')) {
-        safeSetStorage('daily_cookie_public_url', inputVal.split('?')[0]);
-        return inputVal.split('?')[0];
-      }
-      return '';
+    function getCleanBaseUrl() {
+      return window.location.origin + window.location.pathname;
     }
 
     // 오늘의 묵상쿠키 30선 데이터베이스
@@ -1089,9 +1060,9 @@
     let isCookieCracked = false;
     let currentThemeFilter = 'all';
     let isShowingBack = false;
-    let cookieJar = safeGetStorage('daily_cookie_jar_v5', ['grace-01', 'grace-04', 'grace-09', 'grace-18', 'grace-24', 'grace-25']);
-    let amenMap = safeGetStorage('daily_cookie_amens_v5', {});
-    let customName = safeGetStorage('daily_cookie_brand_v5', '오늘의 묵상쿠키');
+    let cookieJar = safeGetStorage('daily_cookie_jar_v6', ['grace-01', 'grace-04', 'grace-09', 'grace-18', 'grace-24', 'grace-25']);
+    let amenMap = safeGetStorage('daily_cookie_amens_v6', {});
+    let customName = safeGetStorage('daily_cookie_brand_v6', '오늘의 묵상쿠키');
 
     window.switchView = function(viewName) {
       const views = ['home', 'daily', 'archive', 'studio'];
@@ -1294,7 +1265,7 @@
 
       if (!cookieJar.includes(picked.id)) {
         cookieJar.push(picked.id);
-        safeSetStorage('daily_cookie_jar_v5', cookieJar);
+        safeSetStorage('daily_cookie_jar_v6', cookieJar);
         updateCookieJarStats();
       }
 
@@ -1336,16 +1307,10 @@
       window.openGiftModal();
     };
 
-    // 일반 링크 공유 (googleusercontent 내부 주소 차단)
     window.shareMainSiteLink = async function() {
       const item = DEVOTIONS[currentIdx];
-      let baseUrl = getPublicShareBaseUrl();
-      if (!baseUrl) {
-        window.openGiftModal();
-        showToast('📌 배포된 웹앱 주소(.../exec)를 한 번 입력해주세요!');
-        return;
-      }
-      const shareUrl = baseUrl + '?id=' + item.id + '&v=5';
+      const baseUrl = getCleanBaseUrl();
+      const shareUrl = baseUrl + '?id=' + item.id;
       const shareTitle = '🥠 오늘의 묵상쿠키 - ' + item.title;
       const shareText = '🥠 [오늘의 묵상쿠키 | Daily Grace Cookie]\n\n✨ “' + item.title + '”\n📖 ' + item.verse + ' (' + item.ref + ')\n\n👇 아래 링크를 눌러 오늘의 말씀 쿠키를 깨뜨려보세요!';
 
@@ -1358,24 +1323,12 @@
       try {
         await navigator.clipboard.writeText(shareText + '\n' + shareUrl);
       } catch (e) {}
-      showToast('📋 오늘의 묵상쿠키 공유 메시지가 복사되었습니다!');
+      showToast('📋 오늘의 묵상쿠키 공유 링크가 복사되었습니다!');
     };
 
     window.openGiftModal = function() {
       const item = DEVOTIONS[currentIdx];
       document.getElementById('giftSelectedVerseTitle').innerText = item.title + ' (' + item.ref + ')';
-
-      // 만약 현재 주소가 googleusercontent.com 이고 Code.gs 에서 appUrl 도 안 넘어왔다면 배포 URL 입력칸 표시
-      const isGasIframe = window.location.href.indexOf('googleusercontent.com') !== -1 && !isCleanTemplateVal(SERVER_APP_URL);
-      const warnBox = document.getElementById('gasUrlWarningBox');
-      if (isGasIframe) {
-        warnBox.style.display = 'block';
-        const saved = safeGetStorage('daily_cookie_public_url', '');
-        if (saved) document.getElementById('customPublicUrlInput').value = saved;
-      } else {
-        warnBox.style.display = 'none';
-      }
-
       document.getElementById('giftModal').style.display = 'flex';
     };
 
@@ -1387,14 +1340,8 @@
       const item = DEVOTIONS[currentIdx];
       const sender = document.getElementById('giftSenderInput').value.trim() || '든든한 동역자';
       const msg = document.getElementById('giftMsgInput').value.trim() || '오늘도 평안하고 복된 하루 보내세요!';
-      
-      let baseUrl = getPublicShareBaseUrl();
-      if (!baseUrl) {
-        alert('구글 앱스 스크립트 배포 주소(https://script.google.com/macros/s/.../exec)를 입력란에 붙여넣어 주세요!');
-        return;
-      }
-
-      const giftUrl = baseUrl + '?gift=' + item.id + '&from=' + encodeURIComponent(sender) + '&msg=' + encodeURIComponent(msg) + '&v=5';
+      const baseUrl = getCleanBaseUrl();
+      const giftUrl = baseUrl + '?gift=' + item.id + '&from=' + encodeURIComponent(sender) + '&msg=' + encodeURIComponent(msg);
       const shareText = '🥠 [' + sender + '님이 구운 오늘의 묵상쿠키 도착!]\n\n💌 메시지: “' + msg + '”\n✨ 힌트: ' + item.category + ' (' + item.ref + ')\n\n👇 아래 링크를 눌러 쿠키를 바삭 깨뜨리고 말씀을 확인하세요!';
 
       window.closeGiftModal();
@@ -1430,4 +1377,121 @@
     }
 
     window.renderArchiveCards = function() {
-      const q = (document.getElementById('archiveSearch')?.
+      const q = (document.getElementById('archiveSearch')?.value || '').toLowerCase();
+      const filtered = DEVOTIONS.filter(function(d) {
+        const matchTheme = currentThemeFilter === 'all'
+          ? true
+          : currentThemeFilter === 'bookmark'
+            ? cookieJar.includes(d.id)
+            : d.category === currentThemeFilter;
+        const matchText = !q || d.title.toLowerCase().includes(q) || d.verse.toLowerCase().includes(q) || d.ref.toLowerCase().includes(q);
+        return matchTheme && matchText;
+      });
+
+      document.getElementById('archiveCountBadge').innerText = filtered.length + '개';
+      const listEl = document.getElementById('archiveCardList');
+      if (!filtered.length) {
+        listEl.innerHTML = '<div class="text-center py-12 text-xs text-slate-400">일치하는 묵상쿠키가 없습니다.</div>';
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(function(item) {
+        const origIdx = DEVOTIONS.findIndex(function(d) { return d.id === item.id; });
+        const collected = cookieJar.includes(item.id);
+        return '<div onclick="window.selectDevotion(' + origIdx + '); window.switchView(\'daily\');" class="surface-card rounded-2xl p-4 border border-slate-100 cursor-pointer hover:border-indigo-300 transition space-y-2">' +
+          '<div class="flex justify-between items-center">' +
+            '<span class="text-[10px] font-bold text-[#5B42F3] bg-indigo-50 px-2.5 py-0.5 rounded-full">' + item.category + '</span>' +
+            '<span class="text-[11px] text-slate-400 font-bold">' + (collected ? '🥠 수집됨 · ' : '') + item.ref + '</span>' +
+          '</div>' +
+          '<h4 class="text-sm font-extrabold text-slate-900">' + item.title + '</h4>' +
+          '<p class="text-xs text-slate-500 leading-relaxed">' + item.verse + '</p>' +
+        '</div>';
+      }).join('');
+    };
+
+    window.filterByTheme = function(theme) {
+      currentThemeFilter = theme;
+      window.switchView('archive');
+    };
+
+    window.drawShareCanvas = function(theme) {
+      const canvas = document.getElementById('shareCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const item = DEVOTIONS[currentIdx];
+
+      const grad = ctx.createLinearGradient(0, 0, 800, 1000);
+      if (theme === 'sunset') {
+        grad.addColorStop(0, '#FF8A3D'); grad.addColorStop(1, '#D9381E');
+      } else if (theme === 'minimal') {
+        grad.addColorStop(0, '#1E293B'); grad.addColorStop(1, '#0F172A');
+      } else {
+        grad.addColorStop(0, '#7C68EE'); grad.addColorStop(1, '#3B28CC');
+      }
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 800, 1000);
+
+      ctx.fillStyle = 'rgba(255,255,255,0.08)';
+      ctx.beginPath(); ctx.arc(700, 120, 220, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(100, 880, 180, 0, Math.PI * 2); ctx.fill();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.font = 'bold 24px Pretendard, sans-serif';
+      ctx.fillText('🥠 오늘의 묵상쿠키  |  ' + item.category, 70, 110);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 42px Pretendard, sans-serif';
+      ctx.fillText(item.title, 70, 190);
+
+      ctx.font = 'bold 31px Pretendard, sans-serif';
+      ctx.fillStyle = '#F8FAFC';
+      wrapText(ctx, item.verse, 70, 300, 660, 50);
+
+      ctx.font = 'bold 28px Pretendard, sans-serif';
+      ctx.fillStyle = '#FDE68A';
+      ctx.fillText('— ' + item.ref, 70, 560);
+
+      ctx.fillStyle = 'rgba(255,255,255,0.14)';
+      roundRect(ctx, 60, 625, 680, 275, 28);
+      ctx.fill();
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '24px Pretendard, sans-serif';
+      wrapText(ctx, item.prayer, 95, 690, 610, 38);
+    };
+
+    window.downloadFixedOgBanner = function() {
+      const canvas = document.getElementById('ogBannerCanvas');
+      const ctx = canvas.getContext('2d');
+
+      const grad = ctx.createLinearGradient(0, 0, 1200, 630);
+      grad.addColorStop(0, '#5B42F3');
+      grad.addColorStop(0.55, '#4338CA');
+      grad.addColorStop(1, '#1E1B4B');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1200, 630);
+
+      ctx.fillStyle = 'rgba(251, 191, 36, 0.16)';
+      ctx.beginPath(); ctx.arc(1020, 315, 230, 0, Math.PI * 2); ctx.fill();
+
+      ctx.fillStyle = '#FDE68A';
+      ctx.font = 'bold 28px Pretendard, sans-serif';
+      ctx.fillText('DAILY GRACE COOKIE · 매일 아침 열리는 은혜', 90, 190);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 78px Pretendard, sans-serif';
+      ctx.fillText('오늘의 묵상쿠키', 90, 300);
+
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = '32px Pretendard, sans-serif';
+      ctx.fillText('바삭! 쿠키를 터치해 오늘의 말씀과 새벽 찬양을 만나보세요', 90, 385);
+
+      ctx.font = '180px sans-serif';
+      ctx.fillText('🥠', 925, 375);
+
+      const link = document.createElement('a');
+      link.download = 'og-image.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('🖼️ 카톡 미리보기용 고정 배너(og-image.png)가 저장되었습니다!');
+    };
