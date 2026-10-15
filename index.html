@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <!-- 카카오톡 · SNS 링크 공유 미리보기 (Open Graph) -->
+  <title>🥠 오늘의 묵상쿠키 | Daily Grace Cookie</title>
+  <meta name="description" content="매일 아침 갓 구운 따뜻한 말씀 쿠키를 톡 깨뜨려 오늘의 은혜를 확인하고 소중한 분께 선물하세요.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="오늘의 묵상쿠키">
+  <meta property="og:title" content="🥠 오늘의 묵상쿠키 | 바삭 깨뜨려 여는 오늘의 말씀">
+  <meta property="og:description" content="도착한 묵상쿠키를 터치해 깨뜨려보세요! 오늘의 성경 말씀과 원어 해설, 새벽 페어링 찬양이 펼쳐집니다.">
+  <meta property="og:image" content="https://placehold.co/1200x630/5B42F3/FFFDF9.png?text=Daily+Grace+Cookie%0A%EC%98%A4%EB%8A%98%EC%9D%98+%EB%AC%B5%EC%83%81%EC%BF%A0%ED%82%A4&font=montserrat">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥠</text></svg>">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #e2e8f0;
+      color: #0f172a;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .custom-scroll::-webkit-scrollbar { width: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 99px; }
+
+    .hero-purple {
+      background: linear-gradient(155deg, #8C7AE6 0%, #5B42F3 100%);
+      box-shadow: 0 20px 38px -12px rgba(91, 66, 243, 0.5);
+    }
+    .hero-orange {
+      background: linear-gradient(155deg, #FF8A3D 0%, #F25C19 100%);
+      box-shadow: 0 20px 38px -12px rgba(242, 92, 25, 0.45);
+    }
+    .hero-gold {
+      background: linear-gradient(155deg, #FBBF24 0%, #D97706 100%);
+      box-shadow: 0 20px 38px -12px rgba(217, 119, 6, 0.45);
+    }
+    .pill-active {
+      background: linear-gradient(180deg, #7C68EE 0%, #5B42F3 100%);
+      box-shadow: 0 14px 26px -6px rgba(91, 66, 243, 0.55);
+      color: #ffffff !important;
+    }
+    .surface-card {
+      background: #ffffff;
+      box-shadow: 0 10px 32px -8px rgba(15, 23, 42, 0.05);
+    }
+
+    @keyframes float3D {
+      0%, 100% { transform: translateY(0px) rotate(-3deg); }
+      50% { transform: translateY(-8px) rotate(4deg); }
+    }
+    .anim-float { animation: float3D 4s ease-in-out infinite; }
+
+    /* 포춘쿠키 모션 */
+    @keyframes cookieIdle {
+      0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+      50% { transform: translateY(-7px) scale(1.04) rotate(2deg); }
+    }
+    .cookie-idle { animation: cookieIdle 2.6s ease-in-out infinite; }
+
+    @keyframes cookieShake {
+      0%, 100% { transform: translateX(0) rotate(0deg) scale(1.05); }
+      20% { transform: translateX(-11px) rotate(-9deg) scale(1.09); }
+      40% { transform: translateX(11px) rotate(9deg) scale(1.12); }
+      60% { transform: translateX(-12px) rotate(-10deg) scale(1.14); }
+      80% { transform: translateX(12px) rotate(10deg) scale(1.15); }
+    }
+    .cookie-shaking { animation: cookieShake 0.5s ease-in-out forwards; }
+
+    #cookieStage {
+      height: 155px;
+      transition: height 0.5s ease, margin 0.5s ease;
+    }
+    #cookieStage.cracked {
+      height: 84px;
+      margin-top: 0px;
+      margin-bottom: 4px;
+    }
+
+    .cookie-half-left, .cookie-half-right {
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-origin: center;
+    }
+    .cracked .cookie-half-left { transform: translate(-52px, 6px) rotate(-32deg) scale(0.75); }
+    .cracked .cookie-half-right { transform: translate(52px, 6px) rotate(32deg) scale(0.75); }
+
+    @keyframes soundWave {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+    .wave-bar { width: 3px; height: 4px; background: #5B42F3; border-radius: 99px; }
+    .is-playing .wave-bar:nth-child(1) { animation: soundWave 0.55s infinite ease-in-out; }
+    .is-playing .wave-bar:nth-child(2) { animation: soundWave 0.4s infinite ease-in-out 0.15s; }
+    .is-playing .wave-bar:nth-child(3) { animation: soundWave 0.7s infinite ease-in-out 0.25s; }
+    .is-playing .wave-bar:nth-child(4) { animation: soundWave 0.48s infinite ease-in-out 0.1s; }
+
+    @keyframes confettiPop {
+      0% { opacity: 1; transform: translate(0, 0) scale(0.5) rotate(0deg); }
+      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.3) rotate(var(--rot)); }
+    }
+    .confetti-piece {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      animation: confettiPop 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="flex justify-center min-h-screen">
+
+  <!-- 모바일 프레임 -->
+  <div class="w-full max-w-[430px] bg-[#FAFBFD] min-h-screen flex flex-col justify-between relative shadow-2xl overflow-x-hidden pb-40">
+    
+    <!-- 상단 공통 헤더 -->
+    <header class="px-6 pt-6 pb-3 flex items-center justify-between sticky top-0 bg-[#FAFBFD]/95 backdrop-blur-md z-30 border-b border-slate-100/80">
+      <button type="button" onclick="window.openFortuneCookieModal('all')" class="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white border border-slate-200/80 shadow-sm active:scale-95 transition cursor-pointer">
+        <span class="text-lg">🥠</span>
+        <span class="text-xs font-extrabold text-slate-800">쿠키뽑기</span>
+      </button>
+
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="window.shareMainSiteLink()" class="px-3 py-2 rounded-2xl bg-indigo-50 text-[#5B42F3] text-xs font-extrabold flex items-center gap-1 active:scale-95 transition cursor-pointer">
+          <span>🔗 공유</span>
+        </button>
+        <button type="button" onclick="window.openGiftModal()" class="px-3 py-2 rounded-2xl bg-amber-50 text-amber-700 border border-amber-200/60 text-xs font-extrabold flex items-center gap-1 active:scale-95 transition cursor-pointer">
+          <span>🎁 선물포장</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- [VIEW 1] 베이커리 홈 -->
+    <div id="view-home" style="display: block;" class="px-6 pt-4 space-y-6 flex-1">
+      <section>
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 text-[#5B42F3] text-[11px] font-extrabold mb-2">
+          <span>✨ Daily Grace Cookie</span>
+        </div>
+        <h1 class="text-[30px] leading-[1.2] tracking-tight text-slate-900">
+          <span id="timeGreeting" class="font-extrabold">Morning</span><br>
+          <span id="userNameDisplay" onclick="window.promptUserName()" class="font-normal text-slate-700 cursor-pointer underline decoration-slate-300 underline-offset-4">오늘의 묵상쿠키</span>
+        </h1>
+        <p class="text-xs text-slate-400 mt-1.5 font-medium">매일 아침 갓 구운 따뜻한 말씀 쿠키로 하루를 여세요.</p>
+      </section>
+
+      <!-- 맛별 묵상쿠키 -->
+      <section class="space-y-2.5">
+        <div class="flex items-center justify-between">
+          <h2 class="text-[16px] font-extrabold text-slate-900">오늘 어떤 맛의 쿠키를 열까요?</h2>
+          <span class="text-[11px] text-amber-600 font-bold">터치 시 즉시 오픈</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <button type="button" onclick="window.openFortuneCookieModal('평안과 위로')" class="surface-card p-3.5 rounded-2xl border border-slate-100 flex items-center gap-3 text-left hover:border-amber-300 active:scale-95 transition cursor-pointer">
+            <span class="w-10 h-10 rounded-2xl bg-amber-50 flex items-center justify-center text-xl shrink-0">🍯</span>
+            <div>
+              <p class="text-xs font-extrabold text-slate-800">허니 평안 쿠키</p>
+              <p class="text-[10px] text-slate-400">불안 내려놓기 · 위로</p>
+            </div>
+          </button>
+          <button type="button" onclick="window.openFortuneCookieModal('소망과 새힘')" class="surface-card p-3.5 rounded-2xl border border-slate-100 flex items-center gap-3 text-left hover:border-orange-300 active:scale-95 transition cursor-pointer">
+            <span class="w-10 h-10 rounded-2xl bg-orange-50 flex items-center justify-center text-xl shrink-0">🔥</span>
+            <div>
+              <p class="text-xs font-extrabold text-slate-800">시나몬 새힘 쿠키</p>
+              <p class="text-[10px] text-slate-400">지친 일상 활력 충전</p>
+            </div>
+          </button>
+          <button type="button" onclick="window.openFortuneCookieModal('믿음과 순종')" class="surface-card p-3.5 rounded-2xl border border-slate-100 flex items-center gap-3 text-left hover:border-emerald-300 active:scale-95 transition cursor-pointer">
+            <span class="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center text-xl shrink-0">🌿</span>
+            <div>
+              <p class="text-xs font-extrabold text-slate-800">말차 지혜 쿠키</p>
+              <p class="text-[10px] text-slate-400">올바른 길 분별 · 순종</p>
+            </div>
+          </button>
+          <button type="button" onclick="window.openFortuneCookieModal('사랑과 나눔')" class="surface-card p-3.5 rounded-2xl border border-slate-100 flex items-center gap-3 text-left hover:border-rose-300 active:scale-95 transition cursor-pointer">
+            <span class="w-10 h-10 rounded-2xl bg-rose-50 flex items-center justify-center text-xl shrink-0">🍓</span>
+            <div>
+              <p class="text-xs font-extrabold text-slate-800">베리 사랑 쿠키</p>
+              <p class="text-[10px] text-slate-400">따뜻한 축복과 섬김</p>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- 3종 스탯 카드 -->
+      <section class="flex gap-3.5 overflow-x-auto no-scrollbar py-1 -mx-6 px-6">
+        <button type="button" onclick="window.filterByTheme('bookmark')" class="hero-purple shrink-0 w-[154px] h-[192px] rounded-[28px] p-5 text-white text-left relative overflow-hidden flex flex-col justify-between cursor-pointer active:scale-95 transition">
+          <div class="w-full">
+            <div class="flex justify-between items-center text-xs text-indigo-100 font-medium">
+              <span>Cookie Jar</span>
+              <span class="tracking-widest font-bold">••</span>
+            </div>
+            <div id="jarPercentStat" class="text-[34px] font-extrabold tracking-tight mt-1 leading-none">20%</div>
+            <p id="jarCountSub" class="text-[11px] text-indigo-100 mt-1">모은 쿠키 6 / 30</p>
+          </div>
+          <div class="anim-float self-center text-[52px] leading-none select-none">🫙</div>
+        </button>
+
+        <button type="button" onclick="window.switchView('archive')" class="hero-orange shrink-0 w-[154px] h-[192px] rounded-[28px] p-5 text-white text-left relative overflow-hidden flex flex-col justify-between cursor-pointer active:scale-95 transition">
+          <div class="w-full">
+            <div class="flex justify-between items-center text-xs text-orange-100 font-medium">
+              <span>Recipes</span>
+              <span class="tracking-widest font-bold">••</span>
+            </div>
+            <div id="homeTotalStat" class="text-[34px] font-extrabold tracking-tight mt-1 leading-none">30</div>
+            <p class="text-[11px] text-orange-100 mt-1">전체 쿠키 도감 보기</p>
+          </div>
+          <div class="anim-float self-center text-[52px] leading-none select-none" style="animation-delay: 1s;">🥠</div>
+        </button>
+
+        <button type="button" onclick="window.openGiftModal()" class="hero-gold shrink-0 w-[148px] h-[192px] rounded-[28px] p-5 text-white text-left relative overflow-hidden flex flex-col justify-between cursor-pointer active:scale-95 transition">
+          <div class="w-full">
+            <div class="flex justify-between items-center text-xs text-amber-100 font-medium">
+              <span>Gift Box</span>
+              <span class="tracking-widest font-bold">••</span>
+            </div>
+            <div class="text-[28px] font-extrabold tracking-tight mt-1 leading-none">Send</div>
+            <p class="text-[11px] text-amber-100 mt-1">지인에게 선물하기</p>
+          </div>
+          <div class="anim-float self-center text-[50px] leading-none select-none" style="animation-delay: 2s;">🎁</div>
+        </button>
+      </section>
+
+      <!-- 오늘의 추천 쿠키 -->
+      <section class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-[17px] font-extrabold text-slate-900">Today's Pick Cookie</h2>
+          <button type="button" onclick="window.switchView('daily')" class="text-xs font-extrabold text-[#5B42F3] cursor-pointer">전체 묵상 보기 →</button>
+        </div>
+
+        <div onclick="window.switchView('daily')" class="surface-card rounded-[28px] p-5 border border-slate-100 cursor-pointer hover:border-indigo-200 active:scale-[0.99] transition space-y-4">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-100 flex items-center justify-center text-2xl shrink-0">
+                🥠
+              </div>
+              <div>
+                <h3 id="homeFeaturedTitle" class="text-[15px] font-extrabold text-slate-900 leading-snug"></h3>
+                <p id="homeFeaturedRef" class="text-xs text-slate-400 font-medium mt-0.5"></p>
+              </div>
+            </div>
+            <span class="text-xs font-extrabold text-[#5B42F3] bg-indigo-50 px-2.5 py-1 rounded-xl shrink-0">열기</span>
+          </div>
+
+          <p id="homeFeaturedVerse" class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded-2xl border border-slate-100"></p>
+
+          <div class="flex items-center gap-2 pt-0.5">
+            <span class="px-3 py-1.5 rounded-xl bg-[#FFF0F3] text-[#E11D48] text-[11px] font-bold">오늘의 추천</span>
+            <span id="homeFeaturedCategoryChip" class="px-3 py-1.5 rounded-xl bg-[#FFF0F3] text-[#E11D48] text-[11px] font-bold"></span>
+            <span class="ml-auto text-xs font-extrabold text-[#5B42F3]">터치하여 상세 묵상 →</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- [VIEW 2] 오늘쿠키 스튜디오 -->
+    <div id="view-daily" style="display: none;" class="px-6 pt-4 space-y-6 flex-1">
+      <section>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">30 Grace Cookies</span>
+          <button type="button" onclick="window.openFortuneCookieModal('all')" class="text-xs font-extrabold text-amber-600 flex items-center gap-1 cursor-pointer">🥠 랜덤 쿠키 깨뜨리기</button>
+        </div>
+        <div id="datePillContainer" class="flex items-start gap-2.5 overflow-x-auto no-scrollbar py-2 px-0.5"></div>
+      </section>
+
+      <section class="space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <span id="dailyDateLabel" class="text-[11px] font-bold text-[#5B42F3]"></span>
+            <h2 class="text-[18px] font-extrabold text-slate-900">오늘의 묵상쿠키 노트</h2>
+          </div>
+          <button type="button" id="flipToggleBtn" onclick="window.flipDailyCard()" class="px-3.5 py-2 rounded-xl bg-indigo-50 text-[#5B42F3] text-xs font-extrabold flex items-center gap-1 active:scale-95 transition cursor-pointer shadow-sm">
+            🔄 원어·배경 레시피 보기
+          </button>
+        </div>
+
+        <!-- 앞면 -->
+        <div id="dailyCardFront" style="display: block;" class="surface-card rounded-[28px] p-6 border border-slate-100 space-y-5">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <span id="dailyCatBadge" class="inline-block text-[11px] font-bold text-[#5B42F3] bg-indigo-50 px-3 py-1 rounded-full mb-2"></span>
+              <h3 id="dailyTitle" class="text-xl font-extrabold text-slate-900 leading-snug"></h3>
+            </div>
+            <button type="button" onclick="window.toggleBookmarkCurrent()" id="dailyBookmarkBtn" class="p-2.5 rounded-2xl bg-slate-50 text-slate-400 active:scale-90 transition cursor-pointer"></button>
+          </div>
+
+          <div class="bg-slate-50/90 rounded-2xl p-4 border-l-4 border-[#5B42F3]">
+            <p id="dailyVerse" class="text-[15px] leading-relaxed font-bold text-slate-800 break-keep"></p>
+            <p id="dailyRef" class="text-xs font-extrabold text-[#5B42F3] mt-2 text-right"></p>
+          </div>
+
+          <div class="space-y-3">
+            <p id="dailyReflection" class="text-sm text-slate-600 leading-relaxed break-keep font-medium"></p>
+            <div class="bg-amber-50/60 border border-amber-100 rounded-2xl p-4 space-y-1.5">
+              <div class="text-[11px] font-extrabold text-amber-700 flex items-center gap-1">🙏 함께 드리는 기도</div>
+              <p id="dailyPrayer" class="text-xs text-slate-700 leading-relaxed italic break-keep"></p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
+            <button type="button" onclick="window.triggerAmen(event)" class="flex-1 py-2.5 px-3 rounded-2xl bg-[#5B42F3] text-white text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition cursor-pointer">
+              <span>🙏 아멘 공감</span>
+              <span id="dailyAmenCount" class="bg-white/20 px-2 py-0.5 rounded-lg text-[11px]">128</span>
+            </button>
+            <button type="button" onclick="window.openGiftModal()" class="py-2.5 px-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-extrabold active:scale-95 transition cursor-pointer">
+              🎁 선물포장
+            </button>
+            <button type="button" onclick="window.switchView('studio')" class="py-2.5 px-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-extrabold active:scale-95 transition cursor-pointer">
+              🖼️ 카드굽기
+            </button>
+          </div>
+        </div>
+
+        <!-- 뒷면 -->
+        <div id="dailyCardBack" style="display: none;" class="surface-card rounded-[28px] p-6 border-2 border-indigo-100 bg-gradient-to-b from-white to-indigo-50/30 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <span class="text-sm font-extrabold text-slate-800">💡 성경 원어 & 배경 레시피</span>
+            <button type="button" onclick="window.flipDailyCard()" class="text-xs font-extrabold text-[#5B42F3] bg-indigo-50 px-3 py-1 rounded-xl cursor-pointer">앞면 본문 보기 ↩</button>
+          </div>
+          <div class="bg-amber-50/90 border border-amber-200/60 rounded-2xl p-4 space-y-1.5">
+            <span class="text-[10px] font-extrabold text-amber-700 uppercase">Original Word Insight</span>
+            <h4 id="dailyHebrew" class="text-base font-extrabold text-slate-900"></h4>
+            <p id="dailyBackground" class="text-xs text-slate-700 leading-relaxed break-keep"></p>
+          </div>
+          <div class="bg-emerald-50/90 border border-emerald-200/60 rounded-2xl p-4 space-y-1.5">
+            <span class="text-[10px] font-extrabold text-emerald-700 uppercase">Daily Action</span>
+            <h4 class="text-xs font-extrabold text-slate-900">🌱 오늘의 삶 적용하기</h4>
+            <p id="dailyAction" class="text-xs text-slate-700 leading-relaxed break-keep"></p>
+          </div>
+          <button type="button" onclick="window.flipDailyCard()" class="w-full py-3 rounded-2xl bg-slate-900 text-white text-xs font-bold active:scale-95 transition cursor-pointer">
+            말씀 본문으로 돌아가기
+          </button>
+        </div>
+      </section>
+
+      <!-- Categories -->
+      <section class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-[17px] font-extrabold text-slate-900">Cookie Flavors</h2>
+          <button type="button" onclick="window.switchView('archive')" class="text-xs font-semibold text-slate-400 cursor-pointer">View all</button>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <button type="button" onclick="window.filterByTheme('평안과 위로')" class="surface-card rounded-[22px] p-3.5 border border-slate-100 text-left cursor-pointer active:scale-95 transition">
+            <div class="w-9 h-9 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-base mb-2.5">🍯</div>
+            <p class="text-[11px] font-extrabold text-slate-800 leading-tight">허니 평안<br><span class="text-[10px] text-slate-400 font-medium">8 Cookies</span></p>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden"><div class="bg-orange-500 h-full w-4/5 rounded-full"></div></div>
+          </button>
+          <button type="button" onclick="window.filterByTheme('소망과 새힘')" class="surface-card rounded-[22px] p-3.5 border border-slate-100 text-left cursor-pointer active:scale-95 transition">
+            <div class="w-9 h-9 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-base mb-2.5">🔥</div>
+            <p class="text-[11px] font-extrabold text-slate-800 leading-tight">시나몬 새힘<br><span class="text-[10px] text-slate-400 font-medium">8 Cookies</span></p>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden"><div class="bg-amber-400 h-full w-3/4 rounded-full"></div></div>
+          </button>
+          <button type="button" onclick="window.filterByTheme('믿음과 순종')" class="surface-card rounded-[22px] p-3.5 border border-slate-100 text-left cursor-pointer active:scale-95 transition">
+            <div class="w-9 h-9 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-base mb-2.5">🌿</div>
+            <p class="text-[11px] font-extrabold text-slate-800 leading-tight">말차 지혜<br><span class="text-[10px] text-slate-400 font-medium">7 Cookies</span></p>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden"><div class="bg-emerald-500 h-full w-5/6 rounded-full"></div></div>
+          </button>
+        </div>
+      </section>
+
+      <!-- 찬양 & 기도 리스트 -->
+      <section class="space-y-3 pb-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-[17px] font-extrabold text-slate-900">Pairing Praise & Prayer</h2>
+          <button type="button" onclick="window.openPraiseModal()" class="text-xs font-semibold text-[#5B42F3] cursor-pointer">찬양 재생 ▶</button>
+        </div>
+
+        <div class="space-y-2.5">
+          <div onclick="window.openPraiseModal()" class="surface-card rounded-2xl p-4 border border-slate-100 flex items-center justify-between cursor-pointer hover:border-indigo-200 transition">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-[#5B42F3] flex items-center justify-center text-xl font-bold">🎵</div>
+              <div>
+                <h4 id="dailyPraiseTitle" class="text-xs font-extrabold text-slate-900"></h4>
+                <div class="flex items-center gap-1 text-amber-400 text-xs mt-1">
+                  <span>★★★★★</span>
+                  <span class="text-[10px] text-slate-400 font-medium ml-1">묵상쿠키 페어링 찬양</span>
+                </div>
+              </div>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700">▶</div>
+          </div>
+
+          <div class="surface-card rounded-2xl p-4 border border-slate-100 flex items-center justify-between">
+            <div class="flex items-center gap-3.5 pr-2">
+              <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-xl font-bold shrink-0">🌅</div>
+              <div>
+                <h4 class="text-xs font-extrabold text-slate-900">새벽을 여는 한 줄 기도</h4>
+                <p id="dailyShortPrayer" class="text-[11px] text-slate-500 mt-0.5 leading-relaxed break-keep"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- [VIEW 3] 쿠키 도감 -->
+    <div id="view-archive" style="display: none;" class="px-6 pt-4 space-y-4 flex-1">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900">묵상쿠키 도감</h2>
+          <p class="text-xs text-slate-400 mt-0.5">30개의 말씀 레시피와 내가 모은 쿠키 단지</p>
+        </div>
+        <span id="archiveCountBadge" class="text-xs font-extrabold text-[#5B42F3] bg-indigo-50 px-3 py-1 rounded-full">30개</span>
+      </div>
+
+      <div class="relative">
+        <input id="archiveSearch" oninput="window.renderArchiveCards()" type="text" placeholder="이사야, 시편, 마태복음, 평화, 치유, 소망 검색..." class="w-full bg-white border border-slate-200 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-[#5B42F3] shadow-sm">
+      </div>
+
+      <div class="flex gap-2 overflow-x-auto no-scrollbar py-0.5">
+        <button type="button" onclick="window.filterByTheme('all')" class="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold shrink-0 cursor-pointer">전체 (30)</button>
+        <button type="button" onclick="window.filterByTheme('bookmark')" class="px-3.5 py-1.5 rounded-xl bg-amber-50 text-amber-700 text-xs font-bold shrink-0 cursor-pointer">🫙 내 쿠키단지</button>
+        <button type="button" onclick="window.filterByTheme('평안과 위로')" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-600 text-xs font-bold shrink-0 cursor-pointer">🍯 허니 평안</button>
+        <button type="button" onclick="window.filterByTheme('소망과 새힘')" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-600 text-xs font-bold shrink-0 cursor-pointer">🔥 시나몬 새힘</button>
+        <button type="button" onclick="window.filterByTheme('믿음과 순종')" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-600 text-xs font-bold shrink-0 cursor-pointer">🌿 말차 지혜</button>
+        <button type="button" onclick="window.filterByTheme('사랑과 나눔')" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-600 text-xs font-bold shrink-0 cursor-pointer">🍓 베리 사랑</button>
+      </div>
+
+      <div id="archiveCardList" class="space-y-3 pb-6"></div>
+    </div>
+
+    <!-- [VIEW 4] 카드굽기 스튜디오 -->
+    <div id="view-studio" style="display: none;" class="px-6 pt-4 space-y-5 flex-1">
+      <div>
+        <h2 class="text-2xl font-extrabold text-slate-900">묵상쿠키 카드굽기</h2>
+        <p class="text-xs text-slate-400 mt-1">카톡 공유용 말씀 카드 이미지나 사이트 대표 OG 썸네일을 저장하세요.</p>
+      </div>
+
+      <div class="flex gap-2">
+        <button type="button" onclick="window.drawShareCanvas('purple')" class="flex-1 py-2 rounded-xl bg-[#5B42F3] text-white text-xs font-bold cursor-pointer">퍼플 베이커리</button>
+        <button type="button" onclick="window.drawShareCanvas('sunset')" class="flex-1 py-2 rounded-xl bg-[#F25C19] text-white text-xs font-bold cursor-pointer">골든 오븐</button>
+        <button type="button" onclick="window.drawShareCanvas('minimal')" class="flex-1 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold cursor-pointer">미드나잇</button>
+      </div>
+
+      <div class="rounded-[28px] overflow-hidden shadow-xl border border-slate-200 bg-white">
+        <canvas id="shareCanvas" width="800" height="1000" class="w-full h-auto block"></canvas>
+      </div>
+
+      <div class="space-y-2.5">
+        <button type="button" onclick="window.downloadShareImage()" class="w-full py-3.5 rounded-2xl bg-[#5B42F3] text-white text-xs font-extrabold shadow-lg active:scale-95 transition cursor-pointer">
+          📥 현재 말씀 카드 이미지 저장 (800×1000)
+        </button>
+        <button type="button" onclick="window.downloadFixedOgBanner()" class="w-full py-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-extrabold active:scale-95 transition cursor-pointer">
+          🖼️ 카톡 링크 미리보기용 고정 배너 저장 (og-image.png)
+        </button>
+      </div>
+      <canvas id="ogBannerCanvas" width="1200" height="630" style="display: none;"></canvas>
+    </div>
+
+    <!-- ==========================================================
+         🥠 [모달] 오늘의 묵상쿠키 깨뜨리기 & 선물 언박싱
+         ========================================================== -->
+    <div id="fortuneModal" style="display: none;" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 items-center justify-center p-4">
+      <div id="fortuneModalCard" class="w-full max-w-[395px] max-h-[88vh] overflow-y-auto custom-scroll bg-gradient-to-b from-[#1e1b4b] via-[#1e293b] to-[#0f172a] rounded-[34px] p-5 sm:p-6 text-white relative shadow-2xl border border-white/10 flex flex-col items-center text-center">
+        
+        <button type="button" onclick="window.closeFortuneCookieModal()" class="sticky top-0 self-end -mb-6 w-8 h-8 rounded-full bg-white/15 text-white hover:bg-white/25 flex items-center justify-center text-xs font-bold cursor-pointer z-20">✕</button>
+
+        <span id="cookieFlavorBadge" class="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">Daily Grace Cookie</span>
+        <h3 id="cookieModalTitle" class="text-lg sm:text-xl font-extrabold mt-2">오늘의 묵상쿠키</h3>
+        <p id="cookieInstruction" class="text-xs text-slate-300 mt-1 break-keep">아래 쿠키를 터치하면 바삭! 소리와 함께 말씀이 펼쳐집니다.</p>
+
+        <!-- SVG 포춘쿠키 스테이지 -->
+        <div id="cookieStage" onclick="window.crackFortuneCookie(event)" class="relative w-56 flex items-center justify-center my-1 cursor-pointer select-none cookie-idle shrink-0">
+          <svg class="cookie-half-left w-24 h-24 drop-shadow-[0_12px_20px_rgba(217,119,6,0.45)] -mr-3" viewBox="0 0 100 100">
+            <defs>
+              <linearGradient id="cookieGradL" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FDE68A"/>
+                <stop offset="55%" stop-color="#F59E0B"/>
+                <stop offset="100%" stop-color="#B45309"/>
+              </linearGradient>
+            </defs>
+            <path d="M90,20 C45,10 12,42 18,78 C22,92 58,95 88,72 C72,58 72,38 90,20 Z" fill="url(#cookieGradL)"/>
+            <path d="M75,32 C50,28 32,48 34,70" stroke="#FEF3C7" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+
+          <svg class="cookie-half-right w-24 h-24 drop-shadow-[0_12px_20px_rgba(217,119,6,0.45)] -ml-3" viewBox="0 0 100 100">
+            <defs>
+              <linearGradient id="cookieGradR" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#FCD34D"/>
+                <stop offset="55%" stop-color="#D97706"/>
+                <stop offset="100%" stop-color="#92400E"/>
+              </linearGradient>
+            </defs>
+            <path d="M10,20 C55,10 88,42 82,78 C78,92 42,95 12,72 C28,58 28,38 10,20 Z" fill="url(#cookieGradR)"/>
+            <path d="M25,35 C48,32 64,50 62,68" stroke="#FDE68A" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+        </div>
+
+        <!-- 펼쳐지는 말씀 페이퍼 -->
+        <div id="fortuneSlipBox" style="display: none;" class="w-full">
+          <div class="bg-[#FFFDF9] text-slate-900 rounded-2xl p-4 sm:p-5 shadow-xl border-2 border-amber-200 text-left space-y-3 relative mt-1">
+            <div id="giftMessageBanner" style="display:none;" class="bg-rose-50 border border-rose-200 rounded-xl p-2.5 text-xs text-rose-700 font-bold"></div>
+            <div class="flex items-center justify-between border-b border-amber-100 pb-2 gap-2">
+              <span id="slipCategory" class="text-[10px] font-extrabold text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full shrink-0"></span>
+              <span id="slipHebrew" class="text-[10px] font-bold text-indigo-600 truncate"></span>
+            </div>
+            <h4 id="slipTitle" class="text-base font-extrabold text-slate-900 leading-snug"></h4>
+            <p id="slipVerse" class="text-xs font-bold text-slate-700 leading-relaxed bg-amber-50/70 p-3 rounded-xl border-l-4 border-amber-500 break-keep"></p>
+            <p id="slipRef" class="text-[11px] font-extrabold text-amber-700 text-right"></p>
+            <p id="slipReflection" class="text-xs text-slate-600 leading-relaxed break-keep"></p>
+
+            <div id="slipActionButtons" class="flex gap-2 pt-2">
+              <button type="button" onclick="window.goToFortuneDetail()" class="flex-1 py-2.5 rounded-xl bg-[#5B42F3] text-white text-xs font-extrabold shadow-md active:scale-95 transition cursor-pointer">
+                깊이 묵상하기 →
+              </button>
+              <button type="button" onclick="window.openGiftModalFromFortune()" class="py-2.5 px-3 rounded-xl bg-amber-100 text-amber-800 text-xs font-extrabold active:scale-95 transition cursor-pointer">
+                🎁 선물
+              </button>
+              <button type="button" onclick="window.resetFortuneCookie()" class="py-2.5 px-3 rounded-xl bg-slate-100 text-slate-700 text-xs font-extrabold active:scale-95 transition cursor-pointer">
+                🥠 또 뽑기
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==========================================================
+         🎁 [모달] 지인에게 묵상쿠키 선물하기 (안전한 URL 처리 탑재)
+         ========================================================== -->
+    <div id="giftModal" style="display: none;" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 items-center justify-center p-5">
+      <div class="w-full max-w-[385px] max-h-[90vh] overflow-y-auto bg-white rounded-[32px] p-6 space-y-4 shadow-2xl">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🎁</span>
+            <div>
+              <h3 class="text-base font-extrabold text-slate-900">오늘의 묵상쿠키 선물하기</h3>
+              <p class="text-[11px] text-slate-400">받는 분이 링크를 열면 직접 쿠키를 깨뜨려 말씀을 확인합니다!</p>
+            </div>
+          </div>
+          <button type="button" onclick="window.closeGiftModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 text-xs font-bold cursor-pointer">✕</button>
+        </div>
+
+        <div class="bg-amber-50/80 border border-amber-200/70 rounded-2xl p-3.5">
+          <p class="text-[10px] font-bold text-amber-700">포장할 묵상쿠키 말씀</p>
+          <p id="giftSelectedVerseTitle" class="text-xs font-extrabold text-slate-900 mt-0.5"></p>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="text-xs font-bold text-slate-700 block mb-1">보내는 분 이름 (닉네임)</label>
+            <input id="giftSenderInput" type="text" placeholder="예: 든든한 동역자, 사랑하는 친구" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#5B42F3]">
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-700 block mb-1">함께 담을 한 줄 축복 메시지</label>
+            <input id="giftMsgInput" type="text" placeholder="예: 오늘도 평안하고 힘찬 하루 보내세요! 💙" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#5B42F3]">
+          </div>
+          <!-- 구글 앱스 스크립트에서 임시 주소가 감지될 때만 나타나는 배포 주소 입력란 -->
+          <div id="gasUrlWarningBox" style="display: none;" class="bg-indigo-50/80 border border-indigo-200 rounded-xl p-3 space-y-1.5">
+            <label class="text-[11px] font-extrabold text-[#5B42F3] block">📌 사이트 기본 주소 (최초 1회 자동 저장)</label>
+            <p class="text-[10px] text-slate-600 leading-normal">구글 앱스 스크립트 환경에서는 빈 화면 방지를 위해 배포된 웹앱 주소(`.../exec`)를 아래에 한 번만 붙여넣어 주세요.</p>
+            <input id="customPublicUrlInput" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-white border border-indigo-200 rounded-lg px-2.5 py-2 text-[11px] focus:outline-none focus:border-[#5B42F3]">
+          </div>
+        </div>
+
+        <button type="button" onclick="window.sendCookieGiftLink()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#FF8A3D] to-[#F25C19] text-white text-xs font-extrabold shadow-lg active:scale-95 transition cursor-pointer">
+          💌 묵상쿠키 선물 링크 복사 & 공유하기
+        </button>
+      </div>
+    </div>
+
+    <!-- 유튜브 찬양 플레이어 모달 -->
+    <div id="praiseModal" style="display: none;" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 items-end justify-center">
+      <div class="w-full max-w-[430px] max-h-[88vh] overflow-y-auto bg-white rounded-t-[32px] p-6 space-y-4 shadow-2xl">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-xl bg-[#5B42F3] text-white flex items-center justify-center text-sm">🎧</span>
+            <div>
+              <h3 class="text-sm font-extrabold text-slate-900">묵상쿠키 페어링 찬양</h3>
+              <p id="modalPraiseSub" class="text-[11px] text-slate-400"></p>
+            </div>
+          </div>
+          <button type="button" onclick="window.closePraiseModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold text-xs cursor-pointer">✕</button>
+        </div>
+
+        <div class="relative w-full pt-[56.25%] rounded-2xl overflow-hidden bg-slate-900 shadow-lg">
+          <iframe id="ytPlayerFrame" class="absolute inset-0 w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div class="bg-indigo-50/70 rounded-2xl p-4 border border-indigo-100">
+          <span class="text-[10px] font-extrabold text-[#5B42F3] uppercase">Morning Prayer</span>
+          <p id="modalShortPrayer" class="text-xs text-slate-700 font-medium mt-1 leading-relaxed"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 하단 미니 오디오 플레이어 바 -->
+    <div onclick="window.openPraiseModal()" class="fixed bottom-[70px] left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-[398px] bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-2xl px-4 py-2.5 shadow-lg flex items-center justify-between z-30 cursor-pointer active:scale-95 transition">
+      <div class="flex items-center gap-3 overflow-hidden">
+        <div id="waveBox" class="flex items-end gap-0.5 h-4 px-1">
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        </div>
+        <div class="truncate">
+          <p id="miniBarTitle" class="text-xs font-extrabold text-slate-800 truncate"></p>
+          <p class="text-[10px] text-slate-400 truncate">터치하여 오늘의 페어링 찬양 듣기</p>
+        </div>
+      </div>
+      <span class="shrink-0 text-[11px] font-extrabold text-[#5B42F3] bg-indigo-50 px-3 py-1 rounded-xl">찬양 ▶</span>
+    </div>
+
+    <!-- 하단 고정 네비게이션 탭바 -->
+    <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-slate-100 px-6 py-3 flex justify-between items-center z-40 rounded-t-[26px] shadow-[0_-8px_30px_-6px_rgba(15,23,42,0.08)]">
+      <button type="button" onclick="window.switchView('home')" id="nav-home" class="flex flex-col items-center gap-1 relative text-[#5B42F3] cursor-pointer px-2 py-1">
+        <span id="ind-home" style="display: block;" class="w-3.5 h-1.5 rounded-full bg-[#F25C19] absolute -top-3"></span>
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L4 9v12h16V9l-8-6zm0 9.5a2 2 0 110-4 2 2 0 010 4z"/></svg>
+        <span class="text-[10px] font-bold">베이커리홈</span>
+      </button>
+
+      <button type="button" onclick="window.switchView('daily')" id="nav-daily" class="flex flex-col items-center gap-1 relative text-slate-400 cursor-pointer px-2 py-1">
+        <span id="ind-daily" style="display: none;" class="w-3.5 h-1.5 rounded-full bg-[#F25C19] absolute -top-3"></span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="text-[10px] font-bold">오늘쿠키</span>
+      </button>
+
+      <button type="button" onclick="window.openFortuneCookieModal('all')" class="flex flex-col items-center gap-1 relative text-amber-500 active:scale-95 transition cursor-pointer px-2 py-1">
+        <span class="text-xl leading-5">🥠</span>
+        <span class="text-[10px] font-extrabold">쿠키뽑기</span>
+      </button>
+
+      <button type="button" onclick="window.switchView('archive')" id="nav-archive" class="flex flex-col items-center gap-1 relative text-slate-400 cursor-pointer px-2 py-1">
+        <span id="ind-archive" style="display: none;" class="w-3.5 h-1.5 rounded-full bg-[#F25C19] absolute -top-3"></span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        <span class="text-[10px] font-bold">쿠키도감</span>
+      </button>
+
+      <button type="button" onclick="window.switchView('studio')" id="nav-studio" class="flex flex-col items-center gap-1 relative text-slate-400 cursor-pointer px-2 py-1">
+        <span id="ind-studio" style="display: none;" class="w-3.5 h-1.5 rounded-full bg-[#F25C19] absolute -top-3"></span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="text-[10px] font-bold">카드굽기</span>
+      </button>
+    </nav>
+
+    <!-- 토스트 알림 -->
+    <div id="toast" class="fixed bottom-28 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 whitespace-nowrap"></div>
+  </div>
+
+  <script>
+    // Google Apps Script 템플릿 변수 수신 (일반 호스팅에서도 에러가 나지 않도록 문자열 안전 처리)
+    const SERVER_APP_URL = "<?= typeof appUrl !== 'undefined' ? appUrl : '' ?>";
+    const SERVER_GIFT_ID = "<?= typeof gift !== 'undefined' ? gift : '' ?>";
+    const SERVER_FROM    = "<?= typeof from !== 'undefined' ? from : '' ?>";
+    const SERVER_MSG     = "<?= typeof msg !== 'undefined' ? msg : '' ?>";
+    const SERVER_ITEM_ID = "<?= typeof id !== 'undefined' ? id : '' ?>";
+
+    function isCleanTemplateVal(val) {
+      return val && val.indexOf('<?') === -1 && val.trim() !== '';
+    }
+
+    function safeGetStorage(key, fallback) {
+      try {
+        const val = localStorage.getItem(key);
+        return val ? JSON.parse(val) : fallback;
+      } catch (e) { return fallback; }
+    }
+    function safeSetStorage(key, val) {
+      try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+    }
+
+    // googleusercontent.com 임시 내부 주소가 공유되는 것을 완벽 방지하는 URL 획득 함수
+    function getPublicShareBaseUrl() {
+      // 1순위: Apps Script 서버에서 넘겨준 진짜 배포 주소
+      if (isCleanTemplateVal(SERVER_APP_URL)) {
+        return SERVER_APP_URL;
+      }
+      // 2순위: 사용자가 저장해둔 배포 주소
+      const savedUrl = safeGetStorage('daily_cookie_public_url', '');
+      if (savedUrl && savedUrl.startsWith('http')) {
+        return savedUrl.split('?')[0];
+      }
+      // 3순위: 일반 웹호스팅(Vercel, Netlify, GitHub Pages 등)인 경우 현재 주소 사용
+      const currentHref = window.location.href.split('?')[0];
+      if (currentHref.indexOf('googleusercontent.com') === -1) {
+        return currentHref;
+      }
+      // 만약 googleusercontent.com 내부 프레임인데 배포 주소가 아직 없다면 입력창 값 확인
+      const inputVal = document.getElementById('customPublicUrlInput')?.value.trim();
+      if (inputVal && inputVal.startsWith('http')) {
+        safeSetStorage('daily_cookie_public_url', inputVal.split('?')[0]);
+        return inputVal.split('?')[0];
+      }
+      return '';
+    }
+
+    // 오늘의 묵상쿠키 30선 데이터베이스
+    const DEVOTIONS = [
+      {
+        id: 'grace-01', dayNum: '01', dayName: 'Cookie', fullDate: 'Cookie #01 · 허니 평안', category: '평안과 위로',
+        title: '평화에 평화를 더하시는 주님',
+        verse: '“주님, 주님께 의지하는 사람들은 늘 한결같은 마음을 가진 사람들이니, 그들에게 평화에 평화를 더하여 주시기 바랍니다.”',
+        ref: '이사야 26:3',
+        reflection: '우리는 사랑과 평화의 하나님께 우리 자신을 온전히 맡겨야 합니다. 요동하는 세상 속에서도 시선을 주님께 고정할 때 흔들리지 않는 평강이 임합니다.',
+        prayer: '“주님, 두 마음을 품지 않고 하나님 한 분만 의지하게 하사, 주님이 주시는 참된 평화와 안식을 누리며 살도록 인도하여 주소서.”',
+        hebrew: '샬롬 샬롬 (שָׁלוֹם שָׁלוֹם)',
+        background: '히브리어 원문은 ‘샬롬’을 두 번 연속 반복하여 세상이 줄 수 없는 완전하고 절대적인 평화를 강조합니다.',
+        action: '불안한 생각이 올라올 때 깊게 호흡하며 “주님이 나의 평화이십니다”라고 세 번 고백해 보세요.',
+        youtubeId: 'ugfWx_541m4', praiseTitle: '평안을 너에게 주노라 · 새벽 묵상곡',
+        shortPrayer: '어려움 속에서도 도우시는 하나님의 은혜를 경험하는 평안의 하루 되게 하소서. 🙏'
+      },
+      {
+        id: 'grace-02', dayNum: '02', dayName: 'Cookie', fullDate: 'Cookie #02 · 허니 평안', category: '평안과 위로',
+        title: '밤낮으로 돌보시는 포도원지기',
+        verse: '“나 주는 포도나무를 돌보는 포도원지기다. 나는 때를 맞추어서 포도나무에 물을 주며, 아무도 포도나무를 해치지 못하도록 밤낮으로 돌본다.”',
+        ref: '이사야 27:3',
+        reflection: '하나님은 우리의 삶과 일상을 밤낮으로 안전하게 보살펴 주시는 세심한 포도원지기이십니다.',
+        prayer: '“주님, 저희의 삶의 터전이 거친 가시나무에 해를 당할까 염려하지 않게 하시고, 밤낮으로 돌보시는 주님의 손길을 신뢰하게 하소서.”',
+        hebrew: '나차르 (נָצַר · 눈동자처럼 지키다)',
+        background: '포도원지기가 뜨거운 태양과 들짐승으로부터 포도나무를 지키듯, 하나님은 때에 맞는 은혜의 단비를 공급하십니다.',
+        action: '오늘 내가 돌보고 챙겨야 할 주변 사람에게 따뜻한 안부 인사 건네기',
+        youtubeId: '6OrA4vQm6kc', praiseTitle: '주님이 나의 보호자 되십니다 · 워십',
+        shortPrayer: '주님이 나의 보호자 되심을 믿고 염려 대신 감사를 택하는 하루 되게 하소서. 🙏'
+      },
+      {
+        id: 'grace-03', dayNum: '03', dayName: 'Cookie', fullDate: 'Cookie #03 · 말차 지혜', category: '믿음과 순종',
+        title: '뒤에서 들려오는 세미한 음성',
+        verse: '“네가 오른쪽이나 왼쪽으로 치우치려 하면, 너의 뒤에서 ‘이것이 바른길이니, 이 길로 가거라’ 하는 소리가 너의 귀에 들릴 것이다.”',
+        ref: '이사야 30:21',
+        reflection: '선택의 기로에서 망설일 때, 우리의 앞길에는 하나님의 빛과 세미한 음성이 그치지 않을 것입니다.',
+        prayer: '“주님, 내 고집대로 치우치지 않게 하시고, 하나님의 말씀을 삶의 이정표로 삼아 혼란한 세상 속에서도 바른길을 걸어가게 하소서.”',
+        hebrew: '데레크 (דֶּרֶךְ · 걸어가야 할 생명의 길)',
+        background: '양 떼의 뒤에서 목자가 소리쳐 방향을 잡아주듯, 성령님은 말씀과 양심을 통해 우리가 갈 길을 일러주십니다.',
+        action: '중요한 결정을 내리기 전 1분간 침묵하며 주님의 지혜 구하기',
+        youtubeId: 'IkaGz2r8xi8', praiseTitle: '우리의 길이 되시는 주님 · 새벽 찬양',
+        shortPrayer: '우리의 길이요 생명이 되시는 주님께 모든 방향을 맡기고 평안을 누리게 하소서. 🙏'
+      },
+      {
+        id: 'grace-04', dayNum: '04', dayName: 'Cookie', fullDate: 'Cookie #04 · 시나몬 새힘', category: '소망과 새힘',
+        title: '독수리 날개 치며 올라가듯',
+        verse: '“오직 주님을 소망으로 삼는 사람은 새 힘을 얻으리니, 독수리가 날개를 치며 솟아오르듯 올라갈 것이요, 뛰어도 지치지 않으며, 걸어도 피곤하지 않을 것이다.”',
+        ref: '이사야 40:31',
+        reflection: '하나님을 믿는 사람들은 내 에너지를 태워 버티는 것이 아니라, 독수리가 상승기류를 타고 날개 치며 올라가는 것 같은 새 힘을 경험합니다.',
+        prayer: '“주님, 어떤 역경을 만난다 해도 하나님을 소망하며 나아가게 하사, 새 힘을 얻고 맡겨주신 사명을 넉넉히 감당하게 하소서.”',
+        hebrew: '카바 (קָוָה · 단단히 묶어 소망하다)',
+        background: '‘소망으로 삼다(카바)’는 약한 실가닥들을 꼬아 튼튼한 밧줄로 만든다는 뜻입니다. 나의 연약함을 주님께 묶을 때 지치지 않습니다.',
+        action: '오늘 몸과 마음이 지칠 때 가볍게 산책하며 하늘을 올려다보고 새 힘 구하기',
+        youtubeId: 'Jv9mu7JnX0k', praiseTitle: '오직 주를 소망하는 자 · 새벽 워십',
+        shortPrayer: '오늘도 새 날을 주시고 걸을 수 있는 새 힘을 주신 주님께 감사드립니다. 🙏'
+      },
+      {
+        id: 'grace-05', dayNum: '05', dayName: 'Cookie', fullDate: 'Cookie #05 · 시나몬 새힘', category: '소망과 새힘',
+        title: '광야에 길을, 사막에 강을',
+        verse: '“내가 이제 새 일을 하려고 한다. 이 일이 이미 드러나고 있는데, 너희가 그것을 알지 못하겠느냐? 내가 광야에 길을 내겠으며, 사막에 강을 내겠다.”',
+        ref: '이사야 43:19',
+        reflection: '하나님은 우리가 모르는 새로운 길을 예비하시고 우리를 기다리고 계십니다. 막막한 광야가 곧 하나님의 기적이 나타나는 무대입니다.',
+        prayer: '“주님, 메마른 세상에서 믿음의 눈을 뜨게 해 주셔서, 주님이 여시는 진리와 생명의 새로운 길을 보게 하소서.”',
+        hebrew: '하다샤 (חֲדָשָׁה · 이전과 차원이 다른 새 일)',
+        background: '과거의 실패나 막힌 환경에 갇히지 않고, 무에서 유를 창조하시는 하나님의 현재진행형 역사를 신뢰하라는 선언입니다.',
+        action: '익숙한 걱정 대신 오늘 새롭게 시도해 볼 작은 도전 한 가지 실행하기',
+        youtubeId: 'HNpN-KqhYkM', praiseTitle: '광야를 지나며 · 소망의 찬양',
+        shortPrayer: '어제의 일은 어찌할 수 없으나 오늘은 주님 안에서 모든 가능성을 가지고 있음을 믿습니다. 🙏'
+      },
+      {
+        id: 'grace-06', dayNum: '06', dayName: 'Cookie', fullDate: 'Cookie #06 · 허니 평안', category: '평안과 위로',
+        title: '물 댄 동산과 끊어지지 않는 샘',
+        verse: '“주님께서 너를 늘 인도하시고, 메마른 곳에서도 너의 영혼을 충족시켜 주시며, 너의 뼈마디에 원기를 주실 것이다. 너는 마치 물 댄 동산처럼 되고 물이 끊어지지 않는 샘처럼 될 것이다.”',
+        ref: '이사야 58:11',
+        reflection: '하나님이 예비하신 샘은 가뭄에도 결코 마르지 않는 풍성한 생수의 샘입니다.',
+        prayer: '“주님, 영원히 목마르지 않는 샘이신 주님을 날마다 찾아 마시게 하사, 생명과 기쁨과 원기가 가득한 삶을 살아가게 하소서.”',
+        hebrew: '라바 (רָוָה · 흠뻑 적시어 만족하게 하다)',
+        background: '건기에도 수로가 연결된 왕의 정원(물 댄 동산)이 푸르름을 유지하듯, 말씀에 연결된 영혼은 메마르지 않습니다.',
+        action: '물 한 잔을 마실 때마다 내 영혼에도 생수의 은혜가 채워지길 짧게 기도하기',
+        youtubeId: 'vTP0yWfxA9E', praiseTitle: '마르지 않는 샘 · 아침 묵상 찬양',
+        shortPrayer: '모든 필요를 부족함 없이 공급하시는 주님을 온전히 신뢰합니다. 🙏'
+      },
+      {
+        id: 'grace-07', dayNum: '07', dayName: 'Cookie', fullDate: 'Cookie #07 · 허니 평안', category: '평안과 위로',
+        title: '주님, 저를 고쳐 주십시오',
+        verse: '“주님, 저를 고쳐 주십시오. 그러면 제가 나을 것입니다. 저를 살려 주십시오. 그러면 제가 살아날 것입니다. 주님은 제가 찬양할 분이십니다.”',
+        ref: '예레미야 17:14',
+        reflection: '하나님은 우리의 온전한 치유와 구원의 유일한 근거가 되십니다.',
+        prayer: '“주님, 심각한 위기와 아픔 속에서도 흔들리지 않게 붙들어 주시고, 고통스러운 시간이 지나가고 몸과 영혼이 깨끗이 회복되게 하소서.”',
+        hebrew: '라파 (רָפָא · 온전히 꿰매어 고치다)',
+        background: '여호와 라파(치료하시는 하나님)는 육체적 질병뿐 아니라 상한 감정과 지친 영혼까지 근원적으로 회복시키십니다.',
+        action: '몸이 편찮거나 마음이 지친 지인을 떠올리며 그분의 이름을 넣어 회복 기도 드리기',
+        youtubeId: 'b7xblJx0G6Q', praiseTitle: '주 나의 치료자 · 회복의 찬양',
+        shortPrayer: '주님을 향한 감동과 치유의 은혜가 날마다 새로워지게 하소서. 🙏'
+      },
+      {
+        id: 'grace-08', dayNum: '08', dayName: 'Cookie', fullDate: 'Cookie #08 · 말차 지혜', category: '믿음과 순종',
+        title: '토기장이의 손안에 있는 그릇',
+        verse: '“그런데 그 토기장이는 진흙으로 그릇을 빚다가 잘 되지 않으면, 그 흙으로 다른 그릇을 빚었다.”',
+        ref: '예레미야 18:4',
+        reflection: '우리의 삶은 우연이 아니라 전능하신 토기장이 하나님의 손길 안에서 가장 아름다운 그릇으로 빚어지고 있습니다.',
+        prayer: '“주님, 나의 운명이 주님의 선하신 손안에 있음을 믿습니다. 토기장이이신 주님께 겸손히 순종하여 귀히 쓰이는 그릇이 되게 하소서.”',
+        hebrew: '야차르 (יָצַר · 목적을 품고 정교하게 빚다)',
+        background: '진흙이 깨어지거나 일그러져도 토기장이가 버리지 않고 물을 부어 다시 빚듯, 하나님은 우리의 실패조차 새롭게 빚으십니다.',
+        action: '내 계획대로 되지 않는 일이 있더라도 “더 좋은 그릇으로 빚으시는 과정”임을 믿고 감사하기',
+        youtubeId: 'GCkTHGgKkE8', praiseTitle: '토기장이 되신 주님 · 묵상 찬양',
+        shortPrayer: '나를 하나님의 형상으로 새롭게 빚어가시는 주님의 능력을 의지합니다. 🙏'
+      },
+      {
+        id: 'grace-09', dayNum: '09', dayName: 'Cookie', fullDate: 'Cookie #09 · 시나몬 새힘', category: '소망과 새힘',
+        title: '네가 나를 부르면 응답하겠고',
+        verse: '“네가 나를 부르면, 내가 너에게 응답하겠고, 네가 모르는 크고 놀라운 비밀을 너에게 알려 주겠다.”',
+        ref: '예레미야 33:3',
+        reflection: '우리는 한 치 앞도 내다볼 수 없지만, 하나님은 미래의 모든 일을 주관하시고 우리를 도우실 묘책을 갖고 계십니다.',
+        prayer: '“주님, 사방이 막힌 것 같은 순간에도 주님을 간절히 찾게 하사, 내가 알지 못했던 크고 비밀한 하나님의 해답을 경험하게 하소서.”',
+        hebrew: '바차르 (בָּצַר · 사람의 지혜로 닿을 수 없는 신비)',
+        background: '예레미야가 시위대 뜰에 갇혀 가장 답답했던 순간에 임한 하나님의 약속으로, 기도는 막힌 담을 여는 열쇠입니다.',
+        action: '혼자 고민하던 문제를 기도 제목 한 줄로 바꾸어 하늘 문을 두드리기',
+        youtubeId: 'MWpiPyJggcI', praiseTitle: '기도로 하늘 문을 여는 삶 · 새벽 찬양',
+        shortPrayer: '사방이 막혀 있는 답답한 상황 속에서도 기도로 하늘 문을 여는 믿음을 주소서. 🙏'
+      },
+      {
+        id: 'grace-10', dayNum: '10', dayName: 'Cookie', fullDate: 'Cookie #10 · 말차 지혜', category: '믿음과 순종',
+        title: '모든 일을 주관하시는 하나님의 섭리',
+        verse: '“궂은 일도 좋은 일도, 가장 높으신 주님께서 말씀하셔서 일어나는 것이 아니냐?”',
+        ref: '예레미야애가 3:38',
+        reflection: '이해할 수 없는 시련 속에서도 모든 상황이 합력하여 선을 이루시는 하나님의 주권 아래 있음을 기억해야 합니다.',
+        prayer: '“주님, 저희의 상황이 어떠하든지 협력하여 선을 이루시는 하나님 한 분을 의지하게 하사, 어려움 가운데서도 소망을 잃지 않게 하소서.”',
+        hebrew: '엘리온 (עֶלְיוֹן · 지극히 높으신 주권자)',
+        background: '인생의 맑은 날과 비 오는 날 모두 주님의 손안에 있기에, 성도는 어떤 날씨에도 흔들리지 않을 수 있습니다.',
+        action: '오늘 만나는 뜻밖의 상황 속에서도 숨겨진 유익을 먼저 찾아보기',
+        youtubeId: 'mNwz0ttmxGI', praiseTitle: '합력하여 선을 이루시는 주님 · 워십',
+        shortPrayer: '환난의 틈 사이로 스며드는 빛을 발견하며 언제나 주님을 찬송하게 하소서. 🙏'
+      },
+      {
+        id: 'grace-11', dayNum: '11', dayName: 'Cookie', fullDate: 'Cookie #11 · 베리 사랑', category: '사랑과 나눔',
+        title: '굳은 마음을 제하고 부드러운 마음을',
+        verse: '“내가 그들에게 일치된 마음을 주고, 새로운 영을 그들 속에 넣어 주겠다. 내가 그들의 몸에서 돌같이 굳은 마음을 없애고, 살같이 부드러운 마음을 주겠다.”',
+        ref: '에스겔 11:19',
+        reflection: '하나님은 차갑고 완고해진 우리의 마음을 녹이시고, 서로를 품어주는 따뜻하고 부드러운 마음을 선물하십니다.',
+        prayer: '“주님, 성령으로 저희의 마음을 새롭게 하여 주사, 돌처럼 굳은 고집을 버리고 사랑으로 하나 되는 공동체를 이루어가게 하소서.”',
+        hebrew: '레브 바사르 (לֵב בָּשָׂר · 따뜻하고 살아 숨 쉬는 마음)',
+        background: '상처와 방어기제로 딱딱하게 굳어진 마음(돌 같은 마음)은 오직 하나님의 사랑의 온기로만 부드럽게 녹아납니다.',
+        action: '가족이나 동료에게 먼저 부드러운 미소와 칭찬의 말 건네기',
+        youtubeId: 'jQleABEXOdU', praiseTitle: '새로운 영과 부드러운 마음 · 새벽기도',
+        shortPrayer: '사랑, 나눔, 섬김이 담긴 말을 통해 생명을 살리는 하루가 되기를 소망합니다. 🙏'
+      },
+      {
+        id: 'grace-12', dayNum: '12', dayName: 'Cookie', fullDate: 'Cookie #12 · 시나몬 새힘', category: '소망과 새힘',
+        title: '마른 뼈에 생기를 불어넣으시는 주님',
+        verse: '“나 주 하나님이 이 뼈들에게 말한다. 내가 너희 속에 생기를 불어넣어, 너희가 다시 살아나게 하겠다.”',
+        ref: '에스겔 37:5',
+        reflection: '하나님만이 절망에서 희망으로, 무기력에서 생명력으로 우리를 다시 일으켜 세우시는 분이십니다.',
+        prayer: '“주님, 말라버린 뼈들에게도 생기를 불어넣어 살리시는 말씀을 믿사오니, 직면한 모든 난관을 이겨내고 회복의 은혜를 누리게 하소서.”',
+        hebrew: '루아흐 (רוּחַ · 하나님의 호흡과 생기)',
+        background: '에스겔 골짜기의 마른 뼈들이 하나님의 말씀과 생기(루아흐)가 임할 때 큰 군대로 일어섰듯, 말씀은 우리를 다시 살립니다.',
+        action: '지쳐 있던 계획이나 목표에 다시 작은 첫걸음 불어넣기',
+        youtubeId: 'SNHitOQS0mI', praiseTitle: '생기를 불어넣으소서 · 부흥 워십',
+        shortPrayer: '마른 뼈같이 굳어진 심령에 하나님의 영이 임하여 새 생명과 활력을 얻게 하소서. 🙏'
+      },
+      {
+        id: 'grace-13', dayNum: '13', dayName: 'Cookie', fullDate: 'Cookie #13 · 허니 평안', category: '평안과 위로',
+        title: '거기 계시는 하나님, 여호와 삼마',
+        verse: '“이렇게 그 둘레가 만 팔천 자이다. 이 성읍의 이름이 이제부터는 ‘여호와 삼마’라고 불릴 것이다.”',
+        ref: '에스겔 48:35',
+        reflection: '에스겔서의 마지막 결론은 ‘하나님이 거기 계신다(여호와 삼마)’입니다. 내가 서 있는 그 자리가 바로 주님이 함께하시는 성소입니다.',
+        prayer: '“주님, 언제 어디서나 하나님이 저희와 함께 계신다는 여호와 삼마의 신앙을 품게 하사, 삶의 모든 자리에 치유와 평안이 가득하게 하소서.”',
+        hebrew: '여호와 삼마 (יְהוָה שָׁמָּה · 주님이 거기 계신다)',
+        background: '포로 생활의 눈물 속에서도 성전을 떠나지 않으시고 백성과 영원히 함께하시겠다는 하나님의 궁극적인 임재 약속입니다.',
+        action: '지금 내가 앉아 있는 책상이나 일터에서 “주님이 이곳에 함께 계십니다”라고 고백하기',
+        youtubeId: 'On5v8E1BJcc', praiseTitle: '여호와 삼마 임마누엘 · 묵상 찬양',
+        shortPrayer: '어떠한 삶의 형편에서도 주께서 나와 함께하신다는 믿음으로 승리하게 하소서. 🙏'
+      },
+      {
+        id: 'grace-14', dayNum: '14', dayName: 'Cookie', fullDate: 'Cookie #14 · 말차 지혜', category: '믿음과 순종',
+        title: '주님과 동행하는 범사의 형통',
+        verse: '“그 주인이 여호와께서 그와 함께하심을 보며 또 여호와께서 그의 범사에 형통케 하심을 보았더라.”',
+        ref: '창세기 39:3',
+        reflection: '성경이 말하는 진정한 형통은 아무 문제가 없는 상태가 아니라, 어떤 상황 속에서도 하나님이 나와 함께하시는 것입니다.',
+        prayer: '“주님, 더 나은 내일을 주실 하나님을 신뢰하며, 주님과의 친밀한 동행을 통해 참된 형통의 복을 누리는 삶이 되게 하소서.”',
+        hebrew: '찰라흐 (צָלַח · 장애물을 넘어 전진하다)',
+        background: '요셉이 억울하게 종으로 팔려간 자리에서도 하나님이 함께하시자, 그곳이 곧 형통의 현장이 되었습니다.',
+        action: '내 주변 사람들이 나를 통해 평안과 선한 영향력을 느낄 수 있도록 성실히 하루 보내기',
+        youtubeId: 'qkv4DvY-S_w', praiseTitle: '지금까지 인도하신 은혜 · 감사 워십',
+        shortPrayer: '여기까지 인도해 오신 주님의 은혜를 기억하며 오늘도 주님과 동행하게 하소서. 🙏'
+      },
+      {
+        id: 'grace-15', dayNum: '15', dayName: 'Cookie', fullDate: 'Cookie #15 · 말차 지혜', category: '믿음과 순종',
+        title: '너의 행사를 여호와께 맡기라',
+        verse: '“너의 행사를 여호와께 맡기라 그리하면 네가 경영하는 것이 이루어지리라.”',
+        ref: '잠언 16:3',
+        reflection: '우리의 지혜와 능력으로는 앞날을 다 헤아릴 수 없기에, 삶을 계획하시고 인도하시는 전능하신 하나님의 손길에 모든 것을 의탁해야 합니다.',
+        prayer: '“주님, 저희가 세운 모든 계획과 꿈을 주님께 맡깁니다. 주님께서 생각과 행동을 주관하시고 주님의 뜻 안에서 길이 열리게 하소서.”',
+        hebrew: '갈랄 (גָּלַל · 무거운 돌을 굴려 넘기다)',
+        background: '‘맡기다(갈랄)’는 내 어깨 위의 무거운 바위를 굴려서 주님께 완전히 넘겨드린다는 생생한 표현입니다.',
+        action: '내가 통제할 수 없는 결과에 대한 집착을 내려놓고 오늘 해야 할 최선에 집중하기',
+        youtubeId: 'HxPy-Vk3GPc', praiseTitle: '나의 길을 주께 맡기네 · 새벽 묵상',
+        shortPrayer: '주께서 여시면 닫을 자가 없음을 고백하오니 주님의 때와 뜻을 신뢰하게 하소서. 🙏'
+      },
+      {
+        id: 'grace-16', dayNum: '16', dayName: 'Cookie', fullDate: 'Cookie #16 · 베리 사랑', category: '사랑과 나눔',
+        title: '많은 사람을 옳은 길로 인도하는 별',
+        verse: '“지혜 있는 사람은 하늘의 밝은 빛처럼 빛날 것이요, 많은 사람을 옳은 길로 인도한 사람은 별처럼 영원히 빛날 것이다.”',
+        ref: '다니엘 12:3',
+        reflection: '나 혼자만 빛나는 삶이 아니라, 어둠 속에서 방황하는 이웃을 옳은 길과 사랑으로 안내하는 삶이 영원한 별처럼 빛납니다.',
+        prayer: '“주님, 저희의 말과 행동이 이웃에게 빛과 위로를 전하는 통로가 되게 하사, 세상의 어둠을 밝히는 별처럼 쓰임 받게 하소서.”',
+        hebrew: '코카브 (כּוֹכָב · 밤하늘의 길잡이 별)',
+        background: '사막의 여행자들이 북극성을 보고 길을 찾듯, 성도의 따뜻한 삶은 누군가에게 다시 살아갈 이정표가 됩니다.',
+        action: '도움이나 격려가 필요한 후배·동료에게 먼저 따뜻한 조언과 손길 건네기',
+        youtubeId: 'K3rvZuRxDUM', praiseTitle: '별처럼 빛나는 하나님의 사람 · 워십',
+        shortPrayer: '내가 받은 은혜가 내게만 머물지 않고 이웃에게 흘러가는 축복의 통로가 되게 하소서. 🙏'
+      },
+      {
+        id: 'grace-17', dayNum: '17', dayName: 'Cookie', fullDate: 'Cookie #17 · 베리 사랑', category: '사랑과 나눔',
+        title: '정의를 뿌리고 사랑의 열매를 거두라',
+        verse: '“정의를 뿌리고 사랑의 열매를 거두어라. 지금은 너희가 주를 찾을 때이다. 묵은 땅을 갈아엎어라.”',
+        ref: '호세아 10:12',
+        reflection: '굳어진 습관과 무관심의 묵은 땅을 기도로 갈아엎을 때, 우리 삶에 정의의 싹이 트고 따뜻한 사랑의 열매가 맺힙니다.',
+        prayer: '“주님, 사랑이 메말라가는 세상 속에서도 묵은 마음의 땅을 갈아엎게 하사, 정의를 뿌리고 풍성한 사랑의 열매를 거두게 하소서.”',
+        hebrew: '헤세드 (חֶסֶד · 인애와 긍휼의 열매)',
+        background: '농부가 파종 전에 딱딱한 땅을 기경하듯, 마음의 회개와 부드러움이 선행될 때 은혜의 단비가 스며듭니다.',
+        action: '미루어 두었던 화해나 감사 인사가 있다면 오늘 먼저 연락해 보기',
+        youtubeId: '82-jzlTcC_Q', praiseTitle: '사랑의 열매를 거두게 하소서 · 찬양',
+        shortPrayer: '하나님의 긍휼을 본받아 도움이 필요한 누군가에게 작은 온기를 전하는 하루 되게 하소서. 🙏'
+      },
+      {
+        id: 'grace-18', dayNum: '18', dayName: 'Cookie', fullDate: 'Cookie #18 · 말차 지혜', category: '믿음과 순종',
+        title: '정의와 사랑, 겸손히 행하는 길',
+        verse: '“무엇이 착한 일인지를 주님께서 이미 말씀하셨다. 오로지 공의를 실천하며 인자를 사랑하며 겸손히 네 하나님과 함께 행하는 것이 아니냐!”',
+        ref: '미가 6:8',
+        reflection: '하나님은 화려한 수식어보다 일상 속에서 공의를 실천하고, 사랑을 베풀며, 겸손히 주님과 보폭을 맞추어 걷기를 원하십니다.',
+        prayer: '“주님, 내 유익을 앞세우지 않고 조건 없는 사랑을 베풀며, 날마다 겸손히 주님과 발맞추어 걷는 삶이 되도록 인도하여 주소서.”',
+        hebrew: '하츠네아 레케트 (겸손히 신중하게 걷다)',
+        background: '구약 전체에서 성도의 삶의 태도를 가장 잘 요약한 황금 구절로, 신앙과 일상의 일치를 강조합니다.',
+        action: '오늘 하루 내 속도를 고집하기보다 함께 일하는 사람들의 속도에 맞추어 배려하기',
+        youtubeId: 'xT1HDblQkp0', praiseTitle: '겸손히 주와 동행하는 삶 · 새벽기도',
+        shortPrayer: '나의 조급함을 부지런함이라 착각하지 않게 하시고 주님과 발맞추어 걷게 하소서. 🙏'
+      },
+      {
+        id: 'grace-19', dayNum: '19', dayName: 'Cookie', fullDate: 'Cookie #19 · 말차 지혜', category: '믿음과 순종',
+        title: '그리 아니하실지라도 기뻐하는 믿음',
+        verse: '“무화과나무에 과일이 없고 포도나무에 열매가 없을지라도... 나는 주님 안에서 즐거워하련다. 나를 구원하신 하나님 안에서 기뻐하련다.”',
+        ref: '하박국 3:17-18',
+        reflection: '참된 신앙의 성숙은 삶의 조건과 소유에 흔들리지 않고, 구원자 되신 하나님 한 분만으로 기뻐하고 감사하는 데 있습니다.',
+        prayer: '“주님, 삶의 근거를 눈에 보이는 환경에 두지 않게 하시고, 어떤 상황에서도 주님 한 분으로 만족하며 기쁨을 누리게 하소서.”',
+        hebrew: '알라즈 (עָלַז · 껑충 뛰며 기뻐하다)',
+        background: '하박국 선지자는 절망적인 현실 한가운데서도 하나님의 신실하심을 바라보며 찬양으로 기도를 마무리했습니다.',
+        action: '무언가 채워져서 감사하기보다, 지금 내 곁에 있는 소중한 것들 자체로 감사 고백하기',
+        youtubeId: 'xEcDi-me6X8', praiseTitle: '그럼에도 불구하고 감사 · 워십',
+        shortPrayer: '세상이 나를 흔들지라도 주님 한 분만으로 기뻐하며 온전한 길을 걸어가게 하소서. 🙏'
+      },
+      {
+        id: 'grace-20', dayNum: '20', dayName: 'Cookie', fullDate: 'Cookie #20 · 베리 사랑', category: '사랑과 나눔',
+        title: '너로 인하여 기쁨을 이기지 못하시며',
+        verse: '“주 너의 하나님이 너와 함께 계신다. 구원을 베푸실 전능하신 하나님이시다. 너를 보고서 기뻐하고 반기시고, 너를 사랑으로 새롭게 해주시고 너를 보고서 노래하며 기뻐하실 것이다.”',
+        ref: '스바냐 3:17',
+        reflection: '우리의 부족함에도 불구하고 하나님은 우리를 바라보시며 기쁨의 노래를 부르시고 사랑으로 새롭게 안아주십니다.',
+        prayer: '“주님, 세상의 평가에 위축되지 않고 나를 보고 기뻐 노래하시는 하나님의 크신 사랑을 깊이 깨달아 당당하게 살아가게 하소서.”',
+        hebrew: '리나 (רִנָּה · 기쁨에 겨워 터져 나오는 환호와 노래)',
+        background: '부모가 어린 자녀를 바라보며 어쩔 줄 몰라 기뻐하듯, 우리를 향한 하나님의 무조건적인 기쁨을 묘사합니다.',
+        action: '나 자신을 자책하기보다 “나는 하나님이 기뻐하시는 소중한 사람”이라고 스스로 격려하기',
+        youtubeId: 'ncbyuowTBWg', praiseTitle: '너로 인하여 기뻐하시며 · 축복 찬양',
+        shortPrayer: '아버지의 조건 없는 사랑을 가득 부어주셔서 나 자신과 이웃을 사랑하게 하소서. 🙏'
+      },
+      {
+        id: 'grace-21', dayNum: '21', dayName: 'Cookie', fullDate: 'Cookie #21 · 시나몬 새힘', category: '소망과 새힘',
+        title: '힘으로도 능으로도 되지 아니하고',
+        verse: '“힘으로도 되지 않고, 권력으로도 되지 않으며, 오직 나의 영으로만 될 것이다. 만군의 주님께서 말씀하신다.”',
+        ref: '스가랴 4:6',
+        reflection: '인생의 큰 산 같은 문제는 사람의 계산이나 완력이 아니라, 오직 도우시는 하나님의 성령의 능력으로만 해결됩니다.',
+        prayer: '“주님, 내 능력과 계산으로만 문제를 풀려 했던 교만을 내려놓습니다. 모든 일에 앞서 성령의 도우심을 구하며 나아가게 하소서.”',
+        hebrew: '루아흐 (רוּחַ · 성령의 바람과 권능)',
+        background: '무너진 성전을 재건하며 낙심하던 스룹바벨에게 하나님은 태산을 평지가 되게 하시는 성령의 능력을 약속하셨습니다.',
+        action: '오늘 업무를 시작하기 전 “내 힘이 아닌 주님의 지혜로 감당합니다”라고 고백하기',
+        youtubeId: '9Vg9bBy3PLM', praiseTitle: '오직 주의 영으로 · 새벽 워십',
+        shortPrayer: '내 힘의 한계를 인정하고 오직 성령의 인도하심을 따라 승리하는 하루 되게 하소서. 🙏'
+      },
+      {
+        id: 'grace-22', dayNum: '22', dayName: 'Cookie', fullDate: 'Cookie #22 · 시나몬 새힘', category: '소망과 새힘',
+        title: '의로운 해가 떠올라 치료하는 광선을',
+        verse: '“그러나 내 이름을 경외하는 너희에게는 의로운 해가 떠올라 치료하는 광선을 비출 것이니, 너희는 외양간에서 풀려난 송아지처럼 뛰어다닐 것이다.”',
+        ref: '말라기 4:2',
+        reflection: '하나님의 이름을 경외하며 기다리는 사람에게는 마침내 따뜻한 치유의 아침 햇살과 벅찬 자유가 임합니다.',
+        prayer: '“주님, 지친 몸과 마음에 치료의 광선을 비추어 주소서. 날마다 삶의 진정한 기쁨과 참된 자유를 누리며 살아가게 하소서.”',
+        hebrew: '마르페 (מַרְפֵּא · 날개 아래의 치유와 회복)',
+        background: '구약 성경의 대미를 장식하는 약속으로, 어두운 시대를 지나 떠오를 메시아의 치유와 회복의 빛을 예언합니다.',
+        action: '햇볕을 쬐며 가볍게 스트레칭하고 내게 주신 건강과 자유 만끽하기',
+        youtubeId: 'Mw0utrSeAqg', praiseTitle: '치료의 광선 비추소서 · 아침 찬양',
+        shortPrayer: '오늘 내가 살아 숨 쉬는 것이 기적임을 고백하며 생명의 기쁨을 누리게 하소서. 🙏'
+      },
+      {
+        id: 'grace-23', dayNum: '23', dayName: 'Cookie', fullDate: 'Cookie #23 · 베리 사랑', category: '사랑과 나눔',
+        title: '산 위에 세운 마을, 세상의 빛',
+        verse: '“너희는 세상의 빛이다. 산 위에 세운 마을은 숨길 수 없다.”',
+        ref: '마태복음 5:14',
+        reflection: '빛은 소리치지 않아도 어둠을 조용히 몰아내고 길을 밝힙니다. 우리의 정직과 따뜻함이 누군가의 밤길을 비추는 등불이 됩니다.',
+        prayer: '“주님, 어두운 세상 속에서 진리와 사랑의 빛을 비추게 하시고, 우리가 속한 가정과 일터가 따뜻한 ‘산 위의 마을’이 되게 하소서.”',
+        hebrew: '포스 (φῶς · 어둠을 밝히는 생명의 빛)',
+        background: '갈릴리 호수 주변 산 정상에 세워진 도시의 등불이 밤바다의 어부들에게 길잡이가 되었듯, 성도는 세상의 등대입니다.',
+        action: '오늘 내가 머무는 자리에서 작은 친절과 정직으로 주변 분위기 밝히기',
+        youtubeId: 'hmXfauNqRoE', praiseTitle: '세상의 빛으로 살게 하소서 · 워십',
+        shortPrayer: '소외된 이웃의 소리에 귀 기울이고 작은 빛과 도움을 나누는 하루가 되게 하소서. 🙏'
+      },
+      {
+        id: 'grace-24', dayNum: '24', dayName: 'Cookie', fullDate: 'Cookie #24 · 허니 평안', category: '평안과 위로',
+        title: '수고하고 무거운 짐 진 자들아',
+        verse: '“수고하고 무거운 짐을 진 사람은 다 나에게로 오너라. 내가 너희를 쉬게 하겠다.”',
+        ref: '마태복음 11:28',
+        reflection: '예수님은 삶의 무게와 책임감에 지친 우리를 있는 모습 그대로 부르시고, 우리의 무거운 멍에를 함께 져주십니다.',
+        prayer: '“주님, 삶의 중압감에 눌려 지칠 때 혼자 버티려 하지 않고 주님께 나아갑니다. 주님의 품 안에서 참된 위로와 안식을 누리게 하소서.”',
+        hebrew: '아나파우오 (ἀναπαύω · 온전한 안식과 재충전)',
+        background: '두 마리 소가 함께 메는 멍에처럼, 주님이 내 옆에서 인생의 무게를 대신 끌어주시기에 참된 쉼이 가능합니다.',
+        action: '오늘 하루 수고한 나 자신에게 “오늘도 참 애썼다”라고 다독이며 편안한 휴식 선물하기',
+        youtubeId: 'lIhIrsSsbVw', praiseTitle: '수고하고 무거운 짐 진 자들아 · 위로곡',
+        shortPrayer: '무거운 짐을 주님께 맡기고 주님이 주시는 참된 평안과 안식을 누리게 하소서. 🙏'
+      },
+      {
+        id: 'grace-25', dayNum: '25', dayName: 'Cookie', fullDate: 'Cookie #25 · 허니 평안', category: '평안과 위로',
+        title: '여호와는 나의 목자시니',
+        verse: '“여호와는 나의 목자시니 내게 부족함이 없으리로다.”',
+        ref: '시편 23:1',
+        reflection: '주님은 언제나 내 마음에 든든한 반석이시요 내가 받을 몫의 전부이시기에, 주님 안에 거할 때 참된 만족과 평안을 누립니다.',
+        prayer: '“주님, 어떤 어려운 일을 만나도 낙심하기보다 나의 선한 목자 되시는 주님을 바라보며 마음을 새롭게 하게 하소서.”',
+        hebrew: '로이 (רֹעִי · 나를 친히 먹이시고 이끄시는 목자)',
+        background: '양은 시력이 약하고 방향 감각이 없지만, 선한 목자가 곁에 있으면 푸른 풀밭과 쉴 만한 물가로 안전하게 인도받습니다.',
+        action: '부족한 것을 세기보다 지금 내게 이미 허락하신 은혜 3가지 세어보기',
+        youtubeId: 'gIZXbgfikGM', praiseTitle: '여호와는 나의 목자시니 · 새벽 찬양',
+        shortPrayer: '나의 모든 선입견을 내려놓고 선한 목자 되시는 주님의 시선으로 오늘을 살게 하소서. 🙏'
+      },
+      {
+        id: 'grace-26', dayNum: '26', dayName: 'Cookie', fullDate: 'Cookie #26 · 시나몬 새힘', category: '소망과 새힘',
+        title: '네 손이 수고한 대로 복되리로다',
+        verse: '“여호와를 경외하며 그 도에 행하는 자마다 복이 있도다 네가 네 손이 수고한 대로 먹을 것이라 네가 복되고 형통하리로다.”',
+        ref: '시편 128:1-2',
+        reflection: '하나님을 경외하며 오늘 내게 주어진 자리에서 땀 흘려 수고할 때, 주님은 그 손길 위에 기쁨과 열매의 복을 더하십니다.',
+        prayer: '“주님, 오늘 내 손으로 감당하는 모든 일들 위에 주님의 은혜를 더하사, 수고한 대로 거두는 기쁨과 형통함을 누리게 하소서.”',
+        hebrew: '아슈레이 (אַשְׁרֵי · 복되도다, 참으로 행복하도다)',
+        background: '성전으로 올라가며 부르던 순례자의 노래로, 일상과 가정에서의 성실한 수고가 곧 거룩한 예배임을 노래합니다.',
+        action: '오늘 내가 맡은 업무와 일상을 주님께 드리는 기쁜 마음으로 시작하기',
+        youtubeId: 'K482B2Sw4dY', praiseTitle: '수고한 대로 복되리로다 · 축복송',
+        shortPrayer: '주님께서 가장 좋은 것으로 베풀어주실 은혜를 기대하며 담대하게 시작합니다. 🙏'
+      },
+      {
+        id: 'grace-27', dayNum: '27', dayName: 'Cookie', fullDate: 'Cookie #27 · 허니 평안', category: '평안과 위로',
+        title: '환난 날의 든든한 피난처',
+        verse: '“주님은 선하시므로, 환난을 당할 때에 피할 피난처가 되신다. 주님께 피하는 사람은 주님께서 보살펴 주신다.”',
+        ref: '나훔 1:7',
+        reflection: '작은 풍랑 앞에서도 흔들리기 쉬운 우리에게, 선하신 하나님은 언제든 달려가 숨을 수 있는 가장 안전한 피난처가 되어주십니다.',
+        prayer: '“주님, 어려운 상황 속에서도 세상의 방법을 먼저 찾지 않게 하시고, 나의 피난처 되신 선하신 하나님을 의지하며 담대하게 하소서.”',
+        hebrew: '마오즈 (מָעוֹז · 난공불락의 요새와 피난처)',
+        background: '폭풍우가 몰아칠 때 바위 요새 안으로 들어가면 안전하듯, 주님께 피하는 자는 주님이 친히 알고 보호하십니다.',
+        action: '마음이 분주할 때 잠시 눈을 감고 “주님이 나의 피난처이십니다”라고 고백하기',
+        youtubeId: 'yr-kpUsDCuY', praiseTitle: '주님은 나의 피난처 · 위로 워십',
+        shortPrayer: '영원을 사모하며 오늘 주님께서 내게 허락하신 현재를 충실하게 살아가게 하소서. 🙏'
+      },
+      {
+        id: 'grace-28', dayNum: '28', dayName: 'Cookie', fullDate: 'Cookie #28 · 시나몬 새힘', category: '소망과 새힘',
+        title: '먼저 그의 나라와 그의 의를 구하라',
+        verse: '“너희는 먼저 하나님의 나라와 하나님의 의를 구하여라. 그리하면 이 모든 것을 너희에게 더하여 주실 것이다.”',
+        ref: '마태복음 6:33',
+        reflection: '삶의 우선순위를 바로 세울 때, 부수적인 염려는 사라지고 우리의 모든 필요를 아시는 하나님의 풍성한 채우심을 경험하게 됩니다.',
+        prayer: '“주님, 무엇을 먹을까 입을까 염려하기보다 하나님의 뜻을 먼저 선택하는 지혜를 주시고, 날마다 채우시는 신실하심을 믿게 하소서.”',
+        hebrew: '프로톤 (πρῶτον · 무엇보다 가장 먼저)',
+        background: '산상수훈의 핵심 메시지로, 삶의 첫 단추를 하나님의 통치에 맞출 때 나머지 모든 단추가 제자리를 찾는다는 영적 원리입니다.',
+        action: '오늘 하루의 일정을 시작하기 전 가장 먼저 1분간 말씀과 기도로 첫 시간 드리기',
+        youtubeId: 'YsbCOSW7qp8', praiseTitle: '먼저 그 나라와 의를 구하라 · 워십',
+        shortPrayer: '오늘 하루 삶의 우선순위를 주님께 두고 양보하며 사랑하는 하루를 살게 하소서. 🙏'
+      },
+      {
+        id: 'grace-29', dayNum: '29', dayName: 'Cookie', fullDate: 'Cookie #29 · 베리 사랑', category: '사랑과 나눔',
+        title: '마음을 다하여 사랑하라',
+        verse: '“네 마음을 다하고, 목숨을 다하고, 뜻을 다하여 주 너의 하나님을 사랑하여라... 네 이웃을 네 몸과 같이 사랑하여라.”',
+        ref: '마태복음 22:37-39',
+        reflection: '하나님 사랑과 이웃 사랑은 동전의 양면과 같아서, 우리 삶 전체를 이끄는 가장 고귀하고 근본적인 기준입니다.',
+        prayer: '“주님, 바쁜 일상 속에서도 하나님을 사랑하고 이웃을 돌보는 일에 마음을 쏟게 하사, 사랑을 흘려보내는 통로가 되게 하소서.”',
+        hebrew: '아가파오 (ἀγαπάω · 조건 없이 내어주는 사랑)',
+        background: '예수님은 성경 전체의 계명을 ‘하나님 사랑’과 ‘이웃 사랑’이라는 두 기둥으로 요약하셨습니다.',
+        action: '오늘 만나는 가족이나 동료에게 “고마워요”, “덕분입니다”라고 따뜻한 사랑 표현하기',
+        youtubeId: 'oyf_Tvan2kU', praiseTitle: '사랑의 통로로 살게 하소서 · 찬양',
+        shortPrayer: '더불어 살아야 행복할 수 있음을 깨닫고 도울 일에 주저하지 않는 하루 되게 하소서. 🙏'
+      },
+      {
+        id: 'grace-30', dayNum: '30', dayName: 'Cookie', fullDate: 'Cookie #30 · 베리 사랑', category: '사랑과 나눔',
+        title: '작은 일에 충성하는 기쁨',
+        verse: '“잘하였다, 착하고 신실한 종아! 네가 작은 일에 신실하였으니, 내가 너에게 많은 일을 맡기겠다. 내 주인의 기쁨에 참여하여라.”',
+        ref: '마태복음 25:21',
+        reflection: '세상은 화려한 크기를 보지만, 하나님은 오늘 내게 맡겨진 작고 평범한 일에 담긴 진심과 신실함을 보시고 큰 기쁨으로 보상하십니다.',
+        prayer: '“주님, 비록 작고 평범한 일일지라도 눈에 보이는 결과보다 주님 앞에서 신실하게 감당하게 하시고, 주님의 기쁨에 참여하게 하소서.”',
+        hebrew: '피스토스 (πιστός · 끝까지 믿음직하고 성실한)',
+        background: '달란트 비유에서 주인의 칭찬 기준은 남긴 액수의 크기가 아니라 맡은 자리에 대한 ‘신실함(피스토스)’이었습니다.',
+        action: '오늘 내게 주어진 가장 작은 업무나 집안일 하나를 기쁜 마음으로 정성껏 마무리하기',
+        youtubeId: 'ci0hpXpb42w', praiseTitle: '착하고 신실한 종 · 묵상 찬양',
+        shortPrayer: '오늘 내게 맡겨진 작은 자리에서 묵묵히 충성하며 주님의 기쁨에 참여하게 하소서. 🙏'
+      }
+    ];
+
+    let currentIdx = 3;
+    let fortunePickedIdx = 0;
+    let isCookieCracked = false;
+    let currentThemeFilter = 'all';
+    let isShowingBack = false;
+    let cookieJar = safeGetStorage('daily_cookie_jar_v5', ['grace-01', 'grace-04', 'grace-09', 'grace-18', 'grace-24', 'grace-25']);
+    let amenMap = safeGetStorage('daily_cookie_amens_v5', {});
+    let customName = safeGetStorage('daily_cookie_brand_v5', '오늘의 묵상쿠키');
+
+    window.switchView = function(viewName) {
+      const views = ['home', 'daily', 'archive', 'studio'];
+      views.forEach(function(v) {
+        const viewEl = document.getElementById('view-' + v);
+        const indEl = document.getElementById('ind-' + v);
+        const navBtn = document.getElementById('nav-' + v);
+
+        if (viewEl) viewEl.style.display = (v === viewName) ? 'block' : 'none';
+        if (indEl) indEl.style.display = (v === viewName) ? 'block' : 'none';
+        if (navBtn) navBtn.style.color = (v === viewName) ? '#5B42F3' : '#94a3b8';
+      });
+
+      if (viewName === 'daily') {
+        renderDatePills();
+        renderDailyStudio();
+      } else if (viewName === 'archive') {
+        window.renderArchiveCards();
+      } else if (viewName === 'studio') {
+        window.drawShareCanvas('purple');
+      }
+      window.scrollTo(0, 0);
+    };
+
+    window.flipDailyCard = function() {
+      isShowingBack = !isShowingBack;
+      const frontEl = document.getElementById('dailyCardFront');
+      const backEl = document.getElementById('dailyCardBack');
+      const btnEl = document.getElementById('flipToggleBtn');
+      if (isShowingBack) {
+        frontEl.style.display = 'none';
+        backEl.style.display = 'block';
+        btnEl.innerText = '↩ 말씀 본문 보기';
+      } else {
+        frontEl.style.display = 'block';
+        backEl.style.display = 'none';
+        btnEl.innerText = '🔄 원어·배경 레시피 보기';
+      }
+    };
+
+    function playCrackSound() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const notes = [1046.5, 1318.5, 1567.98];
+        notes.forEach(function(freq, idx) {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
+          gain.gain.setValueAtTime(0.12, ctx.currentTime + idx * 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.06 + 0.45);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.06);
+          osc.stop(ctx.currentTime + idx * 0.06 + 0.45);
+        });
+        if (navigator.vibrate) navigator.vibrate([40, 30, 60]);
+      } catch (e) {}
+    }
+
+    function updateCookieJarStats() {
+      const pct = Math.min(Math.round((cookieJar.length / DEVOTIONS.length) * 100), 100);
+      document.getElementById('jarPercentStat').innerText = pct + '%';
+      document.getElementById('jarCountSub').innerText = '모은 쿠키 ' + cookieJar.length + ' / ' + DEVOTIONS.length;
+    }
+
+    function renderHomeFeatured() {
+      const item = DEVOTIONS[currentIdx];
+      document.getElementById('homeFeaturedTitle').innerText = item.title;
+      document.getElementById('homeFeaturedRef').innerText = item.ref + ' · ' + item.fullDate;
+      document.getElementById('homeFeaturedVerse').innerText = item.verse;
+      document.getElementById('homeFeaturedCategoryChip').innerText = item.category;
+      document.getElementById('miniBarTitle').innerText = item.praiseTitle;
+    }
+
+    function renderDatePills() {
+      const container = document.getElementById('datePillContainer');
+      container.innerHTML = DEVOTIONS.map(function(item, idx) {
+        const active = idx === currentIdx;
+        return '<button type="button" id="pill-' + idx + '" onclick="window.selectDevotion(' + idx + ')" class="shrink-0 transition-all duration-300 flex flex-col items-center justify-between rounded-[24px] px-3.5 cursor-pointer ' + (active ? 'pill-active py-4 h-28 scale-105' : 'bg-white border border-slate-100 text-slate-700 py-3.5 h-20 hover:border-indigo-200') + '">' +
+          '<div class="flex flex-col items-center">' +
+            '<span class="text-base font-extrabold leading-none">' + item.dayNum + '</span>' +
+            '<span class="text-[10px] font-semibold mt-1 ' + (active ? 'text-indigo-100' : 'text-slate-400') + '">' + item.ref.split(' ')[0] + '</span>' +
+          '</div>' +
+          (active ? '<span class="text-sm mt-1">🥠</span>' : '') +
+        '</button>';
+      }).join('');
+    }
+
+    function renderDailyStudio() {
+      const item = DEVOTIONS[currentIdx];
+      isShowingBack = false;
+      document.getElementById('dailyCardFront').style.display = 'block';
+      document.getElementById('dailyCardBack').style.display = 'none';
+      document.getElementById('flipToggleBtn').innerText = '🔄 원어·배경 레시피 보기';
+
+      document.getElementById('dailyDateLabel').innerText = item.fullDate;
+      document.getElementById('dailyCatBadge').innerText = item.category;
+      document.getElementById('dailyTitle').innerText = item.title;
+      document.getElementById('dailyVerse').innerText = item.verse;
+      document.getElementById('dailyRef').innerText = item.ref;
+      document.getElementById('dailyReflection').innerText = item.reflection;
+      document.getElementById('dailyPrayer').innerText = item.prayer;
+      document.getElementById('dailyHebrew').innerText = item.hebrew;
+      document.getElementById('dailyBackground').innerText = item.background;
+      document.getElementById('dailyAction').innerText = item.action;
+      document.getElementById('dailyPraiseTitle').innerText = item.praiseTitle;
+      document.getElementById('dailyShortPrayer').innerText = item.shortPrayer;
+      document.getElementById('miniBarTitle').innerText = item.praiseTitle;
+
+      const amenCnt = amenMap[item.id] || (115 + currentIdx * 7);
+      document.getElementById('dailyAmenCount').innerText = amenCnt;
+
+      const isSaved = cookieJar.includes(item.id);
+      document.getElementById('dailyBookmarkBtn').innerHTML = isSaved
+        ? '<svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>'
+        : '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>';
+    }
+
+    window.selectDevotion = function(idx) {
+      currentIdx = idx;
+      renderHomeFeatured();
+      renderDatePills();
+      renderDailyStudio();
+    };
+
+    // 포춘쿠키 모달 제어
+    let selectedCookiePool = 'all';
+    let isGiftMode = false;
+
+    window.openFortuneCookieModal = function(flavor) {
+      isGiftMode = false;
+      selectedCookiePool = flavor || 'all';
+      document.getElementById('fortuneModal').style.display = 'flex';
+      document.getElementById('giftMessageBanner').style.display = 'none';
+      document.getElementById('cookieFlavorBadge').innerText = selectedCookiePool === 'all' ? 'Daily Grace Cookie' : selectedCookiePool + ' 쿠키';
+      document.getElementById('cookieModalTitle').innerText = selectedCookiePool === 'all' ? '오늘의 묵상쿠키' : selectedCookiePool + ' 묵상쿠키';
+      window.resetFortuneCookie();
+    };
+
+    function openGiftCookieUnboxing(sender, message) {
+      isGiftMode = true;
+      document.getElementById('fortuneModal').style.display = 'flex';
+      document.getElementById('cookieFlavorBadge').innerText = '🎁 Special Cookie Gift';
+      document.getElementById('cookieModalTitle').innerText = sender + '님이 보낸 묵상쿠키';
+      document.getElementById('cookieInstruction').innerText = '“' + message + '”\n쿠키를 터치해 선물을 열어보세요!';
+      const banner = document.getElementById('giftMessageBanner');
+      banner.innerText = '💌 ' + sender + '님의 메시지: “' + message + '”';
+      banner.style.display = 'block';
+
+      isCookieCracked = false;
+      const stage = document.getElementById('cookieStage');
+      const slip = document.getElementById('fortuneSlipBox');
+      stage.classList.remove('cookie-shaking', 'cracked');
+      stage.classList.add('cookie-idle');
+      slip.style.display = 'none';
+    }
+
+    window.closeFortuneCookieModal = function() {
+      document.getElementById('fortuneModal').style.display = 'none';
+    };
+
+    window.resetFortuneCookie = function() {
+      isCookieCracked = false;
+      isGiftMode = false;
+      const stage = document.getElementById('cookieStage');
+      const slip = document.getElementById('fortuneSlipBox');
+      const modalCard = document.getElementById('fortuneModalCard');
+      stage.classList.remove('cookie-shaking', 'cracked');
+      stage.classList.add('cookie-idle');
+      slip.style.display = 'none';
+      document.getElementById('cookieInstruction').innerText = '아래 쿠키를 터치하면 바삭! 열리며 오늘의 말씀이 나타납니다.';
+      if (modalCard) modalCard.scrollTop = 0;
+    };
+
+    window.crackFortuneCookie = function(e) {
+      if (isCookieCracked) return;
+      isCookieCracked = true;
+
+      playCrackSound();
+
+      const stage = document.getElementById('cookieStage');
+      const slip = document.getElementById('fortuneSlipBox');
+
+      stage.classList.remove('cookie-idle');
+      stage.classList.add('cookie-shaking');
+      document.getElementById('cookieInstruction').innerText = '바삭! 따뜻한 말씀 쿠키가 열리고 있습니다... ✨';
+
+      if (!isGiftMode) {
+        const pool = selectedCookiePool === 'all'
+          ? DEVOTIONS
+          : DEVOTIONS.filter(function(d) { return d.category === selectedCookiePool; });
+        const chosen = pool[Math.floor(Math.random() * pool.length)];
+        fortunePickedIdx = DEVOTIONS.findIndex(function(d) { return d.id === chosen.id; });
+      }
+
+      const picked = DEVOTIONS[fortunePickedIdx];
+
+      if (!cookieJar.includes(picked.id)) {
+        cookieJar.push(picked.id);
+        safeSetStorage('daily_cookie_jar_v5', cookieJar);
+        updateCookieJarStats();
+      }
+
+      document.getElementById('slipCategory').innerText = picked.category;
+      document.getElementById('slipHebrew').innerText = picked.hebrew;
+      document.getElementById('slipTitle').innerText = picked.title;
+      document.getElementById('slipVerse').innerText = picked.verse;
+      document.getElementById('slipRef').innerText = '— ' + picked.ref;
+      document.getElementById('slipReflection').innerText = picked.reflection;
+
+      setTimeout(function() {
+        stage.classList.remove('cookie-shaking');
+        stage.classList.add('cracked');
+        spawnGoldParticles(e ? e.clientX : window.innerWidth / 2, e ? e.clientY : window.innerHeight / 2);
+
+        setTimeout(function() {
+          slip.style.display = 'block';
+          document.getElementById('cookieInstruction').innerText = '🎉 아래로 스크롤하여 말씀을 끝까지 읽어보세요!';
+          setTimeout(function() {
+            const btnArea = document.getElementById('slipActionButtons');
+            if (btnArea && btnArea.scrollIntoView) {
+              btnArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          }, 200);
+        }, 140);
+      }, 460);
+    };
+
+    window.goToFortuneDetail = function() {
+      window.closeFortuneCookieModal();
+      window.selectDevotion(fortunePickedIdx);
+      window.switchView('daily');
+      showToast('🥠 뽑으신 묵상쿠키 노트로 이동했습니다!');
+    };
+
+    window.openGiftModalFromFortune = function() {
+      currentIdx = fortunePickedIdx;
+      window.closeFortuneCookieModal();
+      window.openGiftModal();
+    };
+
+    // 일반 링크 공유 (googleusercontent 내부 주소 차단)
+    window.shareMainSiteLink = async function() {
+      const item = DEVOTIONS[currentIdx];
+      let baseUrl = getPublicShareBaseUrl();
+      if (!baseUrl) {
+        window.openGiftModal();
+        showToast('📌 배포된 웹앱 주소(.../exec)를 한 번 입력해주세요!');
+        return;
+      }
+      const shareUrl = baseUrl + '?id=' + item.id + '&v=5';
+      const shareTitle = '🥠 오늘의 묵상쿠키 - ' + item.title;
+      const shareText = '🥠 [오늘의 묵상쿠키 | Daily Grace Cookie]\n\n✨ “' + item.title + '”\n📖 ' + item.verse + ' (' + item.ref + ')\n\n👇 아래 링크를 눌러 오늘의 말씀 쿠키를 깨뜨려보세요!';
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+          return;
+        } catch (e) {}
+      }
+      try {
+        await navigator.clipboard.writeText(shareText + '\n' + shareUrl);
+      } catch (e) {}
+      showToast('📋 오늘의 묵상쿠키 공유 메시지가 복사되었습니다!');
+    };
+
+    window.openGiftModal = function() {
+      const item = DEVOTIONS[currentIdx];
+      document.getElementById('giftSelectedVerseTitle').innerText = item.title + ' (' + item.ref + ')';
+
+      // 만약 현재 주소가 googleusercontent.com 이고 Code.gs 에서 appUrl 도 안 넘어왔다면 배포 URL 입력칸 표시
+      const isGasIframe = window.location.href.indexOf('googleusercontent.com') !== -1 && !isCleanTemplateVal(SERVER_APP_URL);
+      const warnBox = document.getElementById('gasUrlWarningBox');
+      if (isGasIframe) {
+        warnBox.style.display = 'block';
+        const saved = safeGetStorage('daily_cookie_public_url', '');
+        if (saved) document.getElementById('customPublicUrlInput').value = saved;
+      } else {
+        warnBox.style.display = 'none';
+      }
+
+      document.getElementById('giftModal').style.display = 'flex';
+    };
+
+    window.closeGiftModal = function() {
+      document.getElementById('giftModal').style.display = 'none';
+    };
+
+    window.sendCookieGiftLink = async function() {
+      const item = DEVOTIONS[currentIdx];
+      const sender = document.getElementById('giftSenderInput').value.trim() || '든든한 동역자';
+      const msg = document.getElementById('giftMsgInput').value.trim() || '오늘도 평안하고 복된 하루 보내세요!';
+      
+      let baseUrl = getPublicShareBaseUrl();
+      if (!baseUrl) {
+        alert('구글 앱스 스크립트 배포 주소(https://script.google.com/macros/s/.../exec)를 입력란에 붙여넣어 주세요!');
+        return;
+      }
+
+      const giftUrl = baseUrl + '?gift=' + item.id + '&from=' + encodeURIComponent(sender) + '&msg=' + encodeURIComponent(msg) + '&v=5';
+      const shareText = '🥠 [' + sender + '님이 구운 오늘의 묵상쿠키 도착!]\n\n💌 메시지: “' + msg + '”\n✨ 힌트: ' + item.category + ' (' + item.ref + ')\n\n👇 아래 링크를 눌러 쿠키를 바삭 깨뜨리고 말씀을 확인하세요!';
+
+      window.closeGiftModal();
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: '🥠 오늘의 묵상쿠키 선물 도착!', text: shareText, url: giftUrl });
+          return;
+        } catch (e) {}
+      }
+      try {
+        await navigator.clipboard.writeText(shareText + '\n' + giftUrl);
+      } catch (e) {}
+      showToast('🎁 묵상쿠키 선물 링크가 복사되었습니다! 카톡에 붙여넣어 보세요.');
+    };
+
+    function spawnGoldParticles(cx, cy) {
+      const symbols = ['✨', '🥠', '💛', '🕊️', '⭐', '🌟'];
+      for (let i = 0; i < 14; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-piece text-lg';
+        p.innerText = symbols[i % symbols.length];
+        const angle = (Math.PI * 2 * i) / 14;
+        const dist = 55 + Math.random() * 75;
+        p.style.left = (cx || 200) + 'px';
+        p.style.top = (cy || 300) + 'px';
+        p.style.setProperty('--tx', (Math.cos(angle) * dist) + 'px');
+        p.style.setProperty('--ty', (Math.sin(angle) * dist - 30) + 'px');
+        p.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+        document.body.appendChild(p);
+        setTimeout(function() { p.remove(); }, 1050);
+      }
+    }
+
+    window.renderArchiveCards = function() {
+      const q = (document.getElementById('archiveSearch')?.
